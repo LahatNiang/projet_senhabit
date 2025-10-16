@@ -44,6 +44,8 @@ const Header: React.FC = () => {
           { href: "#about", label: "À propos" },
           { href: "#blog", label: "Blog" },
           { href: "#contact", label: "Contact" },
+           { href: "#admin", label: "Admin" },
+          
         ].map((item) => (
           <a key={item.href} href={item.href} className="relative group">
             {/* Texte avec effet gradient au survol */}

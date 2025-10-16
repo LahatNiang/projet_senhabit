@@ -12,6 +12,7 @@ export default function HeaderEnhanced() {
     { name: "Nos biens", path: "/properties" },
     { name: "À propos", path: "/about" },
     { name: "Contact", path: "/contact" },
+    { name: "Admin", path: "/admin" },
   ];
 
   return (
