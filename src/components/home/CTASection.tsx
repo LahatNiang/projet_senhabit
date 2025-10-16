@@ -30,7 +30,7 @@ export default function CTASection() {
                 Évaluez votre bien en quelques clics
               </p>
               <Button variant="primary" className="w-full">
-                Estimer mon bien
+                 bien
               </Button>
             </div>
 

@@ -22,6 +22,7 @@ export default function HeaderEnhanced() {
     { name: "Nos biens", path: "/properties" },
     { name: "À propos", path: "/about" },
     { name: "Contact", path: "/contact" },
+    { name: "Admin", path: "/admin" },
   ];
 
   return (
@@ -155,7 +156,7 @@ export default function HeaderEnhanced() {
               <div className="pt-4 border-t border-gold-200/50">
                 <Button variant="primary" className="w-full mb-3">
                   <Mail className="w-4 h-4 mr-2" />
-                  Estimer mon bien
+                  Se connecter
                 </Button>
                 <a
                   href="tel:+33123456789"

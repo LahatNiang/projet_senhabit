@@ -1,0 +1,71 @@
+{
+  "clients": [
+    {
+      "nom": "Marie Ndiaye",
+      "email": "awalo@example.com",
+      "telephone": "770000002",
+      "id": "2"
+    },
+    {
+      "id": "3",
+      "nom": "Ali Sow",
+      "email": "ali.sow@example.com",
+      "telephone": "770000003"
+    },
+    {
+      "id": "4",
+      "nom": "Awa Diop",
+      "email": "awa.diop@example.com",
+      "telephone": "770000004"
+    },
+    {
+      "id": "5",
+      "nom": "Fatou Faye",
+      "email": "fatou.faye@example.com",
+      "telephone": "770000005"
+    },
+    {
+      "id": "6",
+      "nom": "Mamadou Ba",
+      "email": "mamadou.ba@example.com",
+      "telephone": "770000006"
+    },
+    {
+      "id": "7",
+      "nom": "Khady Kane",
+      "email": "khady.kane@example.com",
+      "telephone": "770000007"
+    },
+    {
+      "id": "8",
+      "nom": "Ousmane Fall",
+      "email": "ousmane.fall@example.com",
+      "telephone": "770000008"
+    },
+    {
+      "id": "9",
+      "nom": "Amy Sarr",
+      "email": "amy.sarr@example.com",
+      "telephone": "770000009"
+    },
+    {
+      "id": "10",
+      "nom": "Pape Diallo",
+      "email": "pape.diallo@example.com",
+      "telephone": "770000010"
+    },
+    {
+      "id": "11",
+      "nom": "Jean Dupont xxxxx",
+      "email": "jeanxxx.dupont@example.com",
+      "telephone": "77000001"
+    },
+    {
+      "nom": "khadim xxx",
+      "email": "khadimm.dupont@example.com",
+      "telephone": "79800001",
+      "id": "12"
+    }
+  ],
+  "biens": []
+}
