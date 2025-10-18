@@ -4,7 +4,7 @@ import AdminDashboard from "./AdminDashboard";
 
 const menuItems = [
   { name: "Dashboard", path: "/admin" },
-  { name: "Propriétés", path: "/admin/properties" },
+  { name: "Propriétés", path: "/proprietes" },
   { name: "Client", path: "/listclients" },
   { name: "Paramètres", path: "/admin/settings" },
   { name: "Déconnexion", path: "/logout" },

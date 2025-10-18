@@ -1,12 +1,6 @@
 {
   "clients": [
     {
-      "nom": "Marie Ndiaye",
-      "email": "awalo@example.com",
-      "telephone": "770000002",
-      "id": "2"
-    },
-    {
       "id": "3",
       "nom": "Ali Sow",
       "email": "ali.sow@example.com",
@@ -61,11 +55,25 @@
       "telephone": "77000001"
     },
     {
-      "nom": "khadim xxx",
-      "email": "khadimm.dupont@example.com",
-      "telephone": "79800001",
       "id": "12"
+    },
+    {
+      "id": "12",
+      "nom": "oul",
+      "email": "khadimm.dupont@example.com",
+      "telephone": "79800001"
     }
   ],
-  "biens": []
+  "proprietes": [
+    {
+      "titre": "Villa à Saly",
+      "type": "Maison",
+      "adresse": "Route de la plage, Saly",
+      "prix": 75000000,
+      "superficie": 300,
+      "description": "Grande villa avec piscine, idéale pour vacances.",
+      "proprietaire": "Moussa Diop",
+      "id": "2"
+    }
+  ]
 }
