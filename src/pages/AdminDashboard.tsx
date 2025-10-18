@@ -40,7 +40,7 @@ const AdminDashboard: React.FC = () => {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="ventes" fill="#4f46e5" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="ventes" fill="#5e2de4ff" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
