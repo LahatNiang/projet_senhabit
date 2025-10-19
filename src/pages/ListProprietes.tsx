@@ -142,17 +142,11 @@ const ListProprietes: React.FC = () => {
   return (
     <div className="p-8 bg-white rounded-2xl shadow-lg max-w-7xl mx-auto mt-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-indigo-700 flex items-center gap-2">
+        <h1 className="text-3xl font-bold text-[#FFD700] via-[#FFC107] to-[#FF9800]">
           {editingId ? "Modifier une propriété" : "Ajouter une propriété"}
         </h1>
 
-        <button
-          onClick={handleBack}
-          className="flex items-center gap-2 bg-gray-200 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-300 transition"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Retour
-        </button>
+        
       </div>
 
       {/* Formulaire */}
@@ -222,21 +216,32 @@ const ListProprietes: React.FC = () => {
           className="md:col-span-3 border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-indigo-300"
           rows={3}
         />
-        <div className="md:col-span-3 flex justify-end">
-          <button
-            type="submit"
-            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition text-sm"
-          >
-            <Home className="w-4 h-4" />
-            {editingId ? "Modifier" : "Ajouter"}
-          </button>
-        </div>
+        <div className="md:col-span-3 flex justify-between items-center">
+  {/* Bouton retour à gauche */}
+  <button
+    onClick={handleBack}
+    className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-gray-400 transition text-sm"
+  >
+    <ArrowLeft className="w-4 h-4" />
+    Retour
+  </button>
+
+  {/* Bouton ajouter/modifier à droite */}
+  <button
+    type="submit"
+    className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm"
+  >
+    <Home className="w-4 h-4" />
+    {editingId ? "Modifier" : "Ajouter"}
+  </button>
+</div>
+
       </form>
 
       {/* Liste des propriétés */}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden">
-          <thead className="bg-indigo-100">
+          <thead className="bg-gradient-to-r from-[#FFD700] via-[#FFC107] to-[#FF9800] ">
             <tr>
               <th className="p-3 border">Titre</th>
               <th className="p-3 border">Type</th>
