@@ -55,9 +55,6 @@
       "telephone": "77000001"
     },
     {
-      "id": "12"
-    },
-    {
       "id": "12",
       "nom": "oul",
       "email": "khadimm.dupont@example.com",
@@ -74,6 +71,16 @@
       "description": "Grande villa avec piscine, idéale pour vacances.",
       "proprietaire": "Moussa Diop",
       "id": "2"
+    },
+    {
+      "id": "7e7e",
+      "titre": "hotel",
+      "type": "maison",
+      "adresse": "thies",
+      "prix": 12000,
+      "superficie": 150,
+      "description": "jaime bien ",
+      "proprietaire": "maty"
     }
   ]
 }
