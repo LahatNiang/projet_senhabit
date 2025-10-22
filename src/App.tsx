@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
 import  ListClients from "./pages/ListClients";
 import ListProprietes from"./pages/ListProprietes";
+import FormulaireContrat from "./pages/FormulaireContrat";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
              <Route path="/login" element={<Login />} />
              <Route path="/listclients" element={<ListClients />} />
              <Route path="/proprietes" element={<ListProprietes />} />
+              <Route path="/contrats" element={<FormulaireContrat />}/>
              <Route
             path="/admin/*"
             element={

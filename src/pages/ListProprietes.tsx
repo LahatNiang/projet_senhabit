@@ -60,7 +60,7 @@ const ListProprietes: React.FC = () => {
 
     try {
       if (editingId) {
-        const res = await fetch(`${API_URL}/proprietes/${editingId}`, {
+        const res = await fetch(`${API_URL}/proprietes/${Number(editingId)}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(proprieteData),
@@ -69,11 +69,23 @@ const ListProprietes: React.FC = () => {
         Swal.fire("Modifié !", "Propriété mise à jour avec succès", "success");
         setEditingId(null);
       } else {
+        //remplacer
+        const newPropriete = {
+  id: Number(Date.now().toString().slice(-3)),
+ titre,
+  type,
+  adresse,
+  prix: Number(prix),
+  superficie: Number(superficie),
+  description,
+  proprietaire,
+};
         const res = await fetch(`${API_URL}/proprietes`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(proprieteData),
+          body: JSON.stringify(newPropriete),
         });
+
         if (!res.ok) throw new Error("Erreur d’ajout");
         Swal.fire("Ajouté !", "Propriété enregistrée avec succès", "success");
       }
@@ -97,42 +109,79 @@ const ListProprietes: React.FC = () => {
 
   // 🔹 Supprimer
   const deletePropriete = (id: number, titre: string) => {
-    Swal.fire({
-      title: "Êtes-vous sûr ?",
-      text: `Supprimer la propriété "${titre}" ?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Oui, supprimer",
-      cancelButtonText: "Annuler",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await fetch(`${API_URL}/proprietes/${id}`, { method: "DELETE" });
-          if (!res.ok) throw new Error("Erreur de suppression");
-          Swal.fire("Supprimé !", "La propriété a été supprimée", "success");
-          getProprietes();
-        } catch (error) {
-          console.error(error);
-          Swal.fire("Erreur", "Impossible de supprimer", "error");
-        }
+  Swal.fire({
+    title: "Êtes-vous sûr ?",
+    text: `Supprimer la propriété "${titre}" ?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Oui, supprimer",
+    cancelButtonText: "Annuler",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const res = await fetch(`${API_URL}/proprietes/${Number(id)}`, { method: "DELETE" }); // ✅
+        if (!res.ok) throw new Error("Erreur de suppression");
+        Swal.fire("Supprimé !", "La propriété a été supprimée", "success");
+        getProprietes();
+      } catch (error) {
+        console.error(error);
+        Swal.fire("Erreur", "Impossible de supprimer", "error");
       }
-    });
-  };
+    }
+  });
+};
+
+  // const deletePropriete = (id: number, titre: string) => {
+  //   Swal.fire({
+  //     title: "Êtes-vous sûr ?",
+  //     text: `Supprimer la propriété "${titre}" ?`,
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Oui, supprimer",
+  //     cancelButtonText: "Annuler",
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       try {
+  //         const res = await fetch(`${API_URL}/proprietes/${id}`, { method: "DELETE" });
+  //         if (!res.ok) throw new Error("Erreur de suppression");
+  //         Swal.fire("Supprimé !", "La propriété a été supprimée", "success");
+  //         getProprietes();
+  //       } catch (error) {
+  //         console.error(error);
+  //         Swal.fire("Erreur", "Impossible de supprimer", "error");
+  //       }
+  //     }
+  //   });
+  // };
 
   // 🔹 Modifier
   const editPropriete = (p: Propriete) => {
-    setEditingId(p.id);
-    setTitre(p.titre);
-    setType(p.type);
-    setAdresse(p.adresse);
-    setPrix(p.prix);
-    setSuperficie(p.superficie);
-    setDescription(p.description);
-    setProprietaire(p.proprietaire);
+  setEditingId(Number(p.id)); // ✅ force le type number
+  setTitre(p.titre);
+  setType(p.type);
+  setAdresse(p.adresse);
+  setPrix(p.prix);
+  setSuperficie(p.superficie);
+  setDescription(p.description);
+  setProprietaire(p.proprietaire);
+};
+
+
+  // const editPropriete = (p: Propriete) => {
+  //   setEditingId(p.id);
+  //   setTitre(p.titre);
+  //   setType(p.type);
+  //   setAdresse(p.adresse);
+  //   setPrix(p.prix);
+  //   setSuperficie(p.superficie);
+  //   setDescription(p.description);
+  //   setProprietaire(p.proprietaire);
     
-  };
+  // };
 
   // 🔹 Retour
   const handleBack = () => {

@@ -1,86 +1,86 @@
 {
   "clients": [
     {
-      "id": "3",
-      "nom": "Ali Sow",
-      "email": "ali.sow@example.com",
-      "telephone": "770000003"
+      "id": "297",
+      "nom": "ibou",
+      "email": "ibou@gmail.com",
+      "telephone": "77654363"
     },
     {
-      "id": "4",
-      "nom": "Awa Diop",
-      "email": "awa.diop@example.com",
-      "telephone": "770000004"
+      "id": 79,
+      "nom": "fatim",
+      "email": "fatim@gmail.com",
+      "telephone": "778909000"
     },
     {
-      "id": "5",
-      "nom": "Fatou Faye",
-      "email": "fatou.faye@example.com",
-      "telephone": "770000005"
-    },
-    {
-      "id": "6",
-      "nom": "Mamadou Ba",
-      "email": "mamadou.ba@example.com",
-      "telephone": "770000006"
-    },
-    {
-      "id": "7",
-      "nom": "Khady Kane",
-      "email": "khady.kane@example.com",
-      "telephone": "770000007"
-    },
-    {
-      "id": "8",
-      "nom": "Ousmane Fall",
-      "email": "ousmane.fall@example.com",
-      "telephone": "770000008"
-    },
-    {
-      "id": "9",
-      "nom": "Amy Sarr",
-      "email": "amy.sarr@example.com",
-      "telephone": "770000009"
-    },
-    {
-      "id": "10",
-      "nom": "Pape Diallo",
-      "email": "pape.diallo@example.com",
-      "telephone": "770000010"
-    },
-    {
-      "id": "11",
-      "nom": "Jean Dupont xxxxx",
-      "email": "jeanxxx.dupont@example.com",
-      "telephone": "77000001"
-    },
-    {
-      "id": "12",
-      "nom": "oul",
-      "email": "khadimm.dupont@example.com",
-      "telephone": "79800001"
+      "id": 575,
+      "nom": "abdallah",
+      "email": "abd@gmail.com",
+      "telephone": "778909000"
     }
   ],
   "proprietes": [
     {
-      "titre": "Villa à Saly",
-      "type": "Maison",
-      "adresse": "Route de la plage, Saly",
-      "prix": 75000000,
-      "superficie": 300,
-      "description": "Grande villa avec piscine, idéale pour vacances.",
-      "proprietaire": "Moussa Diop",
-      "id": "2"
-    },
-    {
-      "id": "7e7e",
-      "titre": "hotel",
+      "titre": "cisse",
       "type": "maison",
       "adresse": "thies",
-      "prix": 12000,
-      "superficie": 150,
-      "description": "jaime bien ",
-      "proprietaire": "maty"
+      "prix": 333,
+      "superficie": 778,
+      "description": "amourrr",
+      "proprietaire": "prop",
+      "id": "460"
+    },
+    {
+      "id": "103",
+      "titre": "maty",
+      "type": "appart",
+      "adresse": "thies",
+      "prix": 123,
+      "superficie": 300,
+      "description": "bvvcc",
+      "proprietaire": "NDAO"
+    }
+  ],
+  "contrats": [
+    {
+      "clientId": 297,
+      "proprieteId": 103,
+      "typeContrat": "Location",
+      "dateDebut": "2025-10-20",
+      "dateFin": "2025-10-26",
+      "montant": 300,
+      "description": "egg",
+      "id": "418"
+    },
+    {
+      "clientId": 297,
+      "proprieteId": 460,
+      "typeContrat": "Location",
+      "dateDebut": "2025-10-20",
+      "dateFin": "2025-11-08",
+      "montant": 7777,
+      "description": "amour",
+      "id": "889"
+    },
+    {
+      "id": 4022,
+      "clientId": 297,
+      "proprieteId": 103,
+      "typeContrat": "Location",
+      "dateDebut": "2025-10-22",
+      "dateFin": "2025-11-01",
+      "montant": 77888,
+      "description": "hdgdgh"
+    },
+    {
+      "id": 5460,
+      "clientId": 79,
+      "proprieteId": 103,
+      "typeContrat": "Vente",
+      "dateDebut": "2025-11-01",
+      "dateFin": "2025-10-22",
+      "montant": 800,
+      "description": "pos toi"
     }
   ]
 }
