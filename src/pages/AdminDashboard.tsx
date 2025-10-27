@@ -7,8 +7,20 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
 } from "recharts";
-import { Home, Users, Building2, Eye } from "lucide-react";
+import {
+  Home,
+  Users,
+  Building2,
+  Eye,
+  TrendingUp,
+  Activity,
+  PieChart as PieIcon,
+} from "lucide-react";
 
 const data = [
   { name: "Jan", ventes: 400 },
@@ -19,6 +31,8 @@ const data = [
   { name: "Juin", ventes: 239 },
 ];
 
+const COLORS = ["#4F46E5", "#22C55E", "#F59E0B", "#8B5CF6"];
+
 const AdminDashboard: React.FC = () => {
   const [nbProprietes, setNbProprietes] = useState(0);
   const [nbClients, setNbClients] = useState(0);
@@ -26,7 +40,6 @@ const AdminDashboard: React.FC = () => {
 
   const API_URL = "http://localhost:3000";
 
-  // 🟢 Charger les données dynamiquement
   const fetchData = async () => {
     try {
       const [resProprietes, resClients] = await Promise.all([
@@ -39,7 +52,7 @@ const AdminDashboard: React.FC = () => {
 
       setNbProprietes(proprietesData.length);
       setNbClients(clientsData.length);
-      setNbVisites(proprietesData.length + clientsData.length); // exemple de "visites" simulées
+      setNbVisites(proprietesData.length + clientsData.length * 2); // exemple dynamique
     } catch (error) {
       console.error("Erreur de chargement des données :", error);
     }
@@ -47,63 +60,122 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 5000); // mise à jour toutes les 5 sec
+    const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
   }, []);
 
   const totalBiens = nbProprietes + nbClients;
+  const pieData = [
+    { name: "Propriétés", value: nbProprietes },
+    { name: "Clients", value: nbClients },
+    { name: "Visites", value: nbVisites },
+  ];
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
+    <div className="p-6">
+      <h1 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+        <Home className="text-indigo-1000 w-8 h-8" />
         Tableau de bord
       </h1>
 
-      {/* === Statistiques dynamiques === */}
+      {/* === Statistiques principales === */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        {/* Total Biens */}
-        <div className="bg-indigo-700 text-white shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center">
-          <Home className="w-8 h-8 mb-2 text-yellow-300" />
-          <h1 className="text-sm opacity-80">Total Biens</h1>
-          <p className="text-3xl font-bold text-yellow-300">{totalBiens}</p>
+        <div className="bg-purple-500 text-white shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Home className="w-8 h-8 mb-2 text-black" />
+          <h1 className="text-black opacity-80">Total Biens</h1>
+          <p className="text-3xl font-bold text-black">{totalBiens}</p>
         </div>
 
-        {/* Propriétés */}
-        <div className="bg-green-200 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center">
-          <Building2 className="w-8 h-8 mb-2 text-green-600" />
-          <h1 className="text-sm text-gray-700">Propriétés</h1>
-          <p className="text-3xl font-bold text-green-700">{nbProprietes}</p>
+        <div className="bg-indigo-600 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Building2 className="w-8 h-8 mb-2 text-indigo-1000" />
+          <h1 className="text-black ">Propriétés</h1>
+          <p className="text-3xl font-bold text-indigo-1000">{nbProprietes}</p>
         </div>
 
-        {/* Clients */}
-        <div className="bg-yellow-200 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center">
-          <Users className="w-8 h-8 mb-2 text-orange-500" />
-          <h1 className="text-sm text-gray-700">Clients actifs</h1>
-          <p className="text-3xl font-bold text-orange-600">{nbClients}</p>
+        <div className="bg-green-400 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Users className="w-8 h-8 mb-2 text-indigo-1000" />
+          <h1 className="text-black">Clients actifs</h1>
+          <p className="text-3xl font-bold text-indigo-1000">{nbClients}</p>
         </div>
 
-        {/* Visites */}
-        <div className="bg-red-100 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center">
-          <Eye className="w-8 h-8 mb-2 text-purple-500" />
-          <h1 className="text-sm text-gray-700">Visites</h1>
-          <p className="text-3xl font-bold text-purple-600">{nbVisites}</p>
+        <div className="bg-yellow-500 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Eye className="w-8 h-8 mb-2 text-indigo-1000" />
+          <h1 className="text-black">Visites</h1>
+          <p className="text-3xl font-bold text-indigo-1000">{nbVisites}</p>
         </div>
       </div>
 
-      {/* === Graphique === */}
-      <div className="bg-white shadow rounded-2xl p-5">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">
-          Ventes Mensuelles
-        </h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="ventes" fill="#090842ff" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      {/* === Graphiques === */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Bar Chart */}
+        <div className="bg-white shadow rounded-2xl p-5">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700 flex items-center gap-2">
+            <TrendingUp className="text-indigo-800" />
+            Ventes Mensuelles
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="ventes" fill="#030127bb" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Pie Chart */}
+        <div className="bg-white shadow rounded-2xl p-5">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700 flex items-center gap-2">
+            <PieIcon className="text-green-600" />
+            Répartition des Données
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={pieData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+                label={({ name, value }) => `${name}: ${value}`}
+              >
+                {pieData.map((_, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* === Mini cartes d’évolution === */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+        <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-4">
+          <Activity className="text-indigo-600 w-10 h-10" />
+          <div>
+            <p className="text-gray-600 text-sm">Taux de Croissance</p>
+            <h3 className="text-xl font-bold text-indigo-700">+12%</h3>
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-4">
+          <TrendingUp className="text-green-600 w-10 h-10" />
+          <div>
+            <p className="text-gray-600 text-sm">Performance Mensuelle</p>
+            <h3 className="text-xl font-bold text-green-700">+8.5%</h3>
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-2xl shadow flex items-center gap-4">
+          <PieIcon className="text-yellow-500 w-10 h-10" />
+          <div>
+            <p className="text-gray-600 text-sm">Taux d’Occupation</p>
+            <h3 className="text-xl font-bold text-yellow-600">78%</h3>
+          </div>
+        </div>
       </div>
     </div>
   );

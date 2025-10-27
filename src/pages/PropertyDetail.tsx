@@ -1,175 +1,515 @@
-import { useState, useEffect } from "react";
-import { Home, Phone, Mail, Menu, X, Sparkles } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import Button from "../components/ui/Button";
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  MapPin,
+  Bed,
+  Bath,
+  Maximize,
+  Heart,
+  Share2,
+  Phone,
+  Mail,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Building2,
+  Wifi,
+  Car,
+  Zap,
+  Droplet,
+  Shield,
+  X,
+  CheckCircle,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function HeaderEnhanced() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+// Images par type (les mêmes que Properties.tsx)
+const propertyImages = {
+  appartement: [
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop",
+  ],
+  maison: [
+    "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+  ],
+  villa: [
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=800&h=600&fit=crop",
+  ],
+  studio: [
+    "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1502672023488-70e25813eb80?w=800&h=600&fit=crop",
+  ],
+};
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const navItems = [
-    { name: "Accueil", path: "/" },
-    { name: "Nos biens", path: "/properties" },
-    { name: "À propos", path: "/about" },
-    { name: "Contact", path: "/contact" },
-    { name: "Admin", path: "/admin" },
+// Génération des détails d'une propriété (même logique que Properties.tsx)
+const getPropertyDetails = (id: string) => {
+  const types = ["appartement", "maison", "villa", "studio"];
+  const locations = [
+    "Dakar Plateau",
+    "Mermoz",
+    "Fann",
+    "Almadies",
+    "Ngor",
+    "Hann",
   ];
+  const badges = ["nouveau", "exclusif", "coup-de-coeur"];
+
+  const numId = parseInt(id);
+  const type = types[numId % types.length];
+  const location = locations[numId % locations.length];
+  const badge = badges[numId % badges.length];
+  const status = numId % 3 === 0 ? "location" : "vente";
+
+  const price =
+    type === "studio"
+      ? status === "location"
+        ? 150000 + Math.floor(Math.random() * 100000)
+        : 25000000 + Math.floor(Math.random() * 25000000)
+      : status === "location"
+      ? 200000 + Math.floor(Math.random() * 500000)
+      : 35000000 + Math.floor(Math.random() * 165000000);
+
+  const bedrooms = type === "studio" ? 1 : Math.ceil(Math.random() * 5);
+  const bathrooms = Math.ceil(Math.random() * 3);
+  const area =
+    type === "studio"
+      ? 20 + Math.floor(Math.random() * 30)
+      : 50 + Math.floor(Math.random() * 250);
+
+  const images = propertyImages[type as keyof typeof propertyImages];
+
+  return {
+    id,
+    title: `${
+      type.charAt(0).toUpperCase() + type.slice(1)
+    } moderne ${location}`,
+    type,
+    status,
+    price,
+    location,
+    images,
+    bedrooms,
+    bathrooms,
+    area,
+    badge,
+    reference: `SEN-${id.padStart(3, "0")}`,
+    description: `Magnifique ${type} situé dans le quartier prisé de ${location}. Ce bien d'exception offre des prestations haut de gamme avec une vue imprenable et un agencement optimisé pour votre confort. Idéal pour une famille ou un investissement locatif de qualité.`,
+    features: [
+      "Cuisine équipée moderne",
+      "Climatisation",
+      "Parking privé",
+      "Sécurité 24/7",
+      "Internet fibre",
+      "Eau courante",
+      "Terrasse",
+      "Finitions luxueuses",
+    ],
+  };
+};
+
+export default function PropertyDetail() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  if (!id) {
+    navigate("/properties");
+    return null;
+  }
+
+  const property = getPropertyDetails(id);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === property.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? property.images.length - 1 : prev - 1
+    );
+  };
+
+  type BadgeType = "nouveau" | "exclusif" | "coup-de-coeur";
+
+  const badgeVariants: Record<BadgeType, string> = {
+    nouveau: "bg-gradient-to-r from-emerald-500 to-teal-600",
+    exclusif: "bg-gradient-to-r from-purple-500 to-indigo-600",
+    "coup-de-coeur": "bg-gradient-to-r from-rose-500 to-pink-600",
+  };
+
+  const badgeLabels: Record<BadgeType, string> = {
+    nouveau: "Nouveau",
+    exclusif: "Exclusif",
+    "coup-de-coeur": "Coup de cœur",
+  };
+
+  const statusVariants = {
+    vente: "bg-gradient-to-r from-blue-500 to-blue-600",
+    location: "bg-gradient-to-r from-orange-500 to-orange-600",
+  };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-2xl shadow-gold-500/10"
-          : "bg-white/60 backdrop-blur-md"
-      }`}
-      role="banner"
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-gold-50/30 via-transparent to-navy-50/30 pointer-events-none"></div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#fef9f8] py-12">
+      <div className="container mx-auto px-4">
+        {/* Bouton retour - même style que Properties */}
+        <motion.button
+          onClick={() => navigate("/properties")}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.05, x: -5 }}
+          className="flex items-center gap-2 text-[#14204d] hover:text-[#FED9B7] mb-8 font-medium transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5" />
+          Retour aux propriétés
+        </motion.button>
 
-      <div className="container mx-auto px-4 relative">
-        <div className="flex justify-between items-center py-4">
-          <Link
-            to="/"
-            className="flex items-center gap-3 group"
-            aria-label="Altis Immobilier - Accueil"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-navy-400 to-navy-600 rounded-xl blur-md opacity-50 group-hover:opacity-75 transition-opacity animate-pulse"></div>
-              <div className="relative bg-gradient-to-br from-navy-500 to-navy-700 p-3 rounded-xl shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-300">
-                <Home className="w-7 h-7 text-gold-400" />
-                <Sparkles className="w-3 h-3 text-gold-300 absolute -top-1 -right-1 animate-pulse" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-2xl font-display font-bold bg-gradient-to-r from-navy-600 via-navy-500 to-gold-500 bg-clip-text text-transparent">
-                Sen <span className="text-gold-500">Habita</span>
-              </h1>
-              <p className="text-xs text-gray-600 font-sans">
-                Votre expert en immobilier
-              </p>
-            </div>
-          </Link>
-
-          <nav
-            className="hidden lg:flex items-center gap-8"
-            role="navigation"
-            aria-label="Navigation principale"
-          >
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`relative font-medium font-sans transition-all duration-300 group ${
-                    isActive
-                      ? "text-gold-600"
-                      : "text-navy-500 hover:text-gold-500"
-                  }`}
-                >
-                  {item.name}
-                  <span
-                    className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-gold-400 to-gold-600 transition-all duration-300 ${
-                      isActive ? "w-full" : "w-0 group-hover:w-full"
-                    }`}
-                  ></span>
-                  {isActive && (
-                    <span className="absolute -top-1 -right-2 w-2 h-2 bg-gold-500 rounded-full animate-pulse"></span>
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="hidden lg:flex items-center gap-4">
-            <a
-              href="tel:+33123456789"
-              className="flex items-center gap-2 text-navy-500 hover:text-gold-500 transition-all duration-300 group"
-              aria-label="Appeler au +33 1 23 45 67 89"
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Colonne principale */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Galerie d'images - Style cohérent */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl h-96 lg:h-[500px] group"
             >
-              <div className="p-2 bg-gradient-to-br from-navy-50 to-gold-50 rounded-lg group-hover:scale-110 transition-transform">
-                <Phone className="w-4 h-4" />
-              </div>
-              <span className="text-sm font-medium">+33 1 23 45 67 89</span>
-            </a>
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-gold-400 to-gold-600 rounded-xl blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
-              <Button
-                variant="primary"
-                size="md"
-                className="relative animate-pulse-slow"
+              <motion.img
+                key={currentImageIndex}
+                src={property.images[currentImageIndex]}
+                alt={property.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 cursor-pointer"
+                onClick={() => setLightboxOpen(true)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              {/* Navigation images */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={prevImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-all shadow-lg"
               >
-                <Mail className="w-4 h-4 mr-2" />
-                Estimer mon bien
-              </Button>
-            </div>
+                <ChevronLeft className="w-6 h-6 text-[#14204d]" />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={nextImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-all shadow-lg"
+              >
+                <ChevronRight className="w-6 h-6 text-[#14204d]" />
+              </motion.button>
+
+              {/* Indicateurs */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {property.images.map((_, idx) => (
+                  <motion.button
+                    key={idx}
+                    onClick={() => setCurrentImageIndex(idx)}
+                    whileHover={{ scale: 1.2 }}
+                    className={`h-2 rounded-full transition-all ${
+                      idx === currentImageIndex
+                        ? "bg-[#FED9B7] w-8"
+                        : "bg-white/70 w-2"
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Badges - même style que Properties */}
+              <div className="absolute top-4 left-4 flex flex-col gap-2">
+                <motion.div
+                  className={`${
+                    badgeVariants[property.badge as BadgeType]
+                  } text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg`}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {badgeLabels[property.badge as BadgeType]}
+                </motion.div>
+                <motion.div
+                  className={`${
+                    statusVariants[
+                      property.status as keyof typeof statusVariants
+                    ]
+                  } text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg`}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {property.status === "vente" ? "À vendre" : "À louer"}
+                </motion.div>
+              </div>
+
+              {/* Actions - même style */}
+              <div className="absolute top-4 right-4 flex gap-2">
+                <motion.button
+                  onClick={() => setIsFavorite(!isFavorite)}
+                  className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all shadow-lg"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Heart
+                    className={`w-5 h-5 ${
+                      isFavorite ? "fill-red-500 text-red-500" : "text-gray-600"
+                    }`}
+                  />
+                </motion.button>
+                <motion.button
+                  className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all shadow-lg"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Share2 className="w-5 h-5 text-gray-600" />
+                </motion.button>
+              </div>
+            </motion.div>
+
+            {/* Informations principales - Style cohérent */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20"
+            >
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h1 className="text-4xl font-bold text-[#14204d] mb-3">
+                    {property.title}
+                  </h1>
+                  <p className="text-gray-600 flex items-center gap-2 mb-2">
+                    <MapPin className="w-5 h-5 text-[#FED9B7]" />
+                    {property.location}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Référence : {property.reference}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <motion.p
+                    className="text-3xl font-bold text-[#14204d]"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {property.price.toLocaleString("fr-FR")} F CFA
+                  </motion.p>
+                  {property.status === "location" && (
+                    <p className="text-gray-600 text-lg">/mois</p>
+                  )}
+                  <p className="text-sm text-gray-500 mt-1">
+                    ≈{" "}
+                    {Math.round(property.price / property.area).toLocaleString(
+                      "fr-FR"
+                    )}{" "}
+                    F CFA/m²
+                  </p>
+                </div>
+              </div>
+
+              {/* Caractéristiques - même style que Properties */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 pb-8 border-b border-gray-200">
+                <motion.div
+                  className="bg-gradient-to-br from-[#FED9B7]/20 to-[#f7b79c]/20 p-5 rounded-2xl"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Bed className="w-6 h-6 text-[#FED9B7] mb-2" />
+                  <p className="text-2xl font-bold text-[#14204d]">
+                    {property.bedrooms}
+                  </p>
+                  <p className="text-sm text-gray-600">Chambres</p>
+                </motion.div>
+                <motion.div
+                  className="bg-gradient-to-br from-[#FED9B7]/20 to-[#f7b79c]/20 p-5 rounded-2xl"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Bath className="w-6 h-6 text-[#FED9B7] mb-2" />
+                  <p className="text-2xl font-bold text-[#14204d]">
+                    {property.bathrooms}
+                  </p>
+                  <p className="text-sm text-gray-600">Salles de bain</p>
+                </motion.div>
+                <motion.div
+                  className="bg-gradient-to-br from-[#FED9B7]/20 to-[#f7b79c]/20 p-5 rounded-2xl"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Maximize className="w-6 h-6 text-[#FED9B7] mb-2" />
+                  <p className="text-2xl font-bold text-[#14204d]">
+                    {property.area}
+                  </p>
+                  <p className="text-sm text-gray-600">m²</p>
+                </motion.div>
+                <motion.div
+                  className="bg-gradient-to-br from-[#FED9B7]/20 to-[#f7b79c]/20 p-5 rounded-2xl"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Building2 className="w-6 h-6 text-[#FED9B7] mb-2" />
+                  <p className="text-2xl font-bold text-[#14204d] capitalize">
+                    {property.type}
+                  </p>
+                  <p className="text-sm text-gray-600">Type</p>
+                </motion.div>
+              </div>
+
+              {/* Description */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-[#14204d] mb-4">
+                  Description
+                </h2>
+                <p className="text-gray-600 leading-relaxed">
+                  {property.description}
+                </p>
+              </div>
+
+              {/* Équipements - Style cohérent */}
+              <div>
+                <h2 className="text-2xl font-bold text-[#14204d] mb-4">
+                  Équipements
+                </h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {property.features.map((feature, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="flex items-center gap-3 text-gray-700"
+                      whileHover={{ x: 5 }}
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-[#FED9B7] to-[#f7b79c] rounded-lg flex items-center justify-center flex-shrink-0">
+                        {idx % 6 === 0 && (
+                          <Wifi className="w-4 h-4 text-white" />
+                        )}
+                        {idx % 6 === 1 && (
+                          <Zap className="w-4 h-4 text-white" />
+                        )}
+                        {idx % 6 === 2 && (
+                          <Car className="w-4 h-4 text-white" />
+                        )}
+                        {idx % 6 === 3 && (
+                          <Shield className="w-4 h-4 text-white" />
+                        )}
+                        {idx % 6 === 4 && (
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        )}
+                        {idx % 6 === 5 && (
+                          <Droplet className="w-4 h-4 text-white" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium">{feature}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </div>
 
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-navy-500 hover:bg-gold-50 rounded-lg transition-all duration-300 hover:scale-110"
-            aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-            aria-expanded={mobileMenuOpen}
+          {/* Formulaire de contact - Style cohérent */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-1"
           >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        </div>
+            <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 shadow-2xl sticky top-8 border border-white/20">
+              <h3 className="text-xl font-bold text-[#14204d] mb-6">
+                Contactez-nous
+              </h3>
 
-        {mobileMenuOpen && (
-          <nav
-            className="lg:hidden py-4 border-t border-gold-200/50 animate-slideDown backdrop-blur-xl bg-white/90"
-            role="navigation"
-            aria-label="Navigation mobile"
-          >
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => {
-                const isActive = location.pathname === item.path;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`py-2 px-4 rounded-lg font-medium transition-all duration-300 ${
-                      isActive
-                        ? "bg-gradient-to-r from-gold-50 to-navy-50 text-gold-600 shadow-md"
-                        : "text-navy-500 hover:bg-gold-50"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
-              <div className="pt-4 border-t border-gold-200/50">
-                <Button variant="primary" className="w-full mb-3">
-                  <Mail className="w-4 h-4 mr-2" />
-                  Se connecter
-                </Button>
-                <a
-                  href="tel:+33123456789"
-                  className="flex items-center justify-center gap-2 text-navy-500 py-2"
+              <form className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Votre nom"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-[#FED9B7] transition-all shadow-sm"
+                />
+                <input
+                  type="email"
+                  placeholder="Votre email"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-[#FED9B7] transition-all shadow-sm"
+                />
+                <input
+                  type="tel"
+                  placeholder="Votre téléphone"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-[#FED9B7] transition-all shadow-sm"
+                />
+                <textarea
+                  placeholder="Votre message"
+                  rows={4}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-[#FED9B7] resize-none transition-all shadow-sm"
+                  defaultValue={`Je suis intéressé(e) par le bien ${property.reference}`}
+                />
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] py-3 rounded-2xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
                 >
-                  <Phone className="w-4 h-4" />
-                  <span className="text-sm font-medium">+33 1 23 45 67 89</span>
-                </a>
+                  <Mail className="w-5 h-5" />
+                  Envoyer le message
+                </motion.button>
+              </form>
+
+              <div className="mt-6 pt-6 border-t border-gray-200 space-y-3">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-white border-2 border-[#FED9B7] text-[#14204d] py-3 rounded-2xl font-bold hover:bg-[#FED9B7]/10 transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <Phone className="w-5 h-5" />
+                  Appeler maintenant
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-white border-2 border-[#FED9B7] text-[#14204d] py-3 rounded-2xl font-bold hover:bg-[#FED9B7]/10 transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <Calendar className="w-5 h-5" />
+                  Planifier une visite
+                </motion.button>
               </div>
             </div>
-          </nav>
-        )}
+          </motion.div>
+        </div>
       </div>
-    </header>
+
+      {/* Lightbox - même style */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <motion.button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-6 right-6 bg-white/10 backdrop-blur-sm p-3 rounded-full hover:bg-white/20 transition-all"
+              whileHover={{ scale: 1.1 }}
+            >
+              <X className="w-6 h-6 text-white" />
+            </motion.button>
+            <motion.img
+              src={property.images[currentImageIndex]}
+              alt={property.title}
+              className="max-w-full max-h-full rounded-2xl object-contain shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

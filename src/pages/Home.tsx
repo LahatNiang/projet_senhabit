@@ -5,10 +5,12 @@ import ProcessSection from "../components/home/ProcessSection";
 import TestimonialsSection from "../components/home/TestimonialsSection";
 import BlogSection from "../components/home/BlogSection";
 import CTASection from "../components/home/CTASection";
+import FullScreenCarousel from "../components/home/FullScreenCarousel";
 
 export default function Home() {
   return (
     <>
+    <FullScreenCarousel />
       <Hero />
       <ServicesSection />
       <FeaturedProperties />
