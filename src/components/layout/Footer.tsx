@@ -1,5 +1,4 @@
 import {
-  Home,
   Phone,
   Mail,
   MapPin,
@@ -11,156 +10,154 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../ui/Button";
+import Logo from "../ui/Logo";
+
 
 export default function Footer() {
   return (
     <footer
-      className="bg-[#0a0f2c] text-white pt-16 pb-8 border-t border-[#14204d]"
+      className="relative bg-gradient-to-br from-[#f7b79c] via-[#FED9B7] to-[#fef9f8] text-[#14204d] pt-16 pb-8 overflow-hidden"
       role="contentinfo"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        {/* === Grille principale === */}
+      {/* Overlay sombre pour lisibilité */}
+      <div className="absolute inset-0 bg-black/10 pointer-events-none"></div>
+
+      {/* Dégradé subtil haut */}
+      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#FED9B7]/20 pointer-events-none" />
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* === Bloc logo et description === */}
+          {/* --- Logo + Présentation --- */}
           <div>
-            <Link to="/" className="flex items-center gap-3 mb-5 w-fit group">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800]">
-                <Home className="w-6 h-6 text-navy-950" />
+            <Link to="/" className="mb-4 block">
+              <div className="scale-90 hover:scale-95 transition-transform duration-300">
+                <Logo size="md" showText={true} />
               </div>
-              <h3 className="text-xl font-display font-bold bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] bg-clip-text text-transparent">
-                Sen Habita
-              </h3>
             </Link>
-
-            <p className="text-gray-300 text-sm leading-relaxed mb-5 font-sans">
-              Votre partenaire de confiance pour trouver la propriété de vos
-              rêves. Expertise, professionnalisme et accompagnement
-              personnalisé.
+            <p className="text-[#14204d]/90 text-sm leading-relaxed mb-4">
+              Votre partenaire immobilier de confiance au Sénégal. Expertise,
+              élégance et accompagnement sur mesure pour vos projets.
             </p>
-
             <div className="flex gap-3">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
-                  aria-label="Réseaux sociaux"
-                  className="p-2 rounded-lg bg-[#14204d] hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800] transition-all"
+                  className="bg-gradient-to-br from-[#FED9B7] to-[#fef9f8] hover:from-[#fef3e7] hover:to-[#fff9f7] p-2 rounded-lg transition-all shadow-md hover:shadow-[#FED9B7]/30"
+                  aria-label="social"
                 >
-                  <Icon className="w-5 h-5 text-white hover:text-navy-950 transition-all" />
+                  <Icon className="w-5 h-5 text-[#14204d]" />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* === Services === */}
+          {/* --- Services --- */}
           <div>
-            <h4 className="font-display font-bold text-lg mb-4 bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] bg-clip-text text-transparent">
+            <h4 className="font-display font-bold text-lg mb-4 text-[#14204d]">
               Nos Services
             </h4>
-            <ul className="space-y-2 text-gray-300 font-sans">
+            <ul className="space-y-2 text-[#14204d]/90">
               {[
                 ["Vente de biens", "/properties"],
                 ["Location", "/properties"],
                 ["Estimation gratuite", "/contact"],
                 ["Gestion locative", "/properties"],
                 ["Conseils en investissement", "/about"],
-              ].map(([label, link]) => (
-                <li key={label}>
+              ].map(([title, link], i) => (
+                <li key={i}>
                   <Link
                     to={link}
-                    className="transition-all hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800] hover:bg-clip-text hover:text-transparent"
+                    className="hover:text-[#FED9B7] transition-colors"
                   >
-                    {label}
+                    {title}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* === Contact === */}
+          {/* --- Contact --- */}
           <div>
-            <h4 className="font-display font-bold text-lg mb-4 bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] bg-clip-text text-transparent">
+            <h4 className="font-display font-bold text-lg mb-4 text-[#14204d]">
               Contact
             </h4>
-            <ul className="space-y-3 text-gray-300 font-sans">
+            <ul className="space-y-3 text-[#14204d]/90">
               <li className="flex items-start gap-2">
-                <MapPin className="w-5 h-5 text-[#FFD700] flex-shrink-0 mt-0.5" />
+                <MapPin className="w-5 h-5 text-[##14204d] mt-0.5" />
                 <span className="text-sm">
-                  123 Avenue des Champs-Élysées
+                  Rue 10, Almadies
                   <br />
-                  75008 Paris, France
+                  Dakar, Sénégal
                 </span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
+                <Phone className="w-5 h-5 text-[##14204d]" />
                 <a
-                  href="tel:+33123456789"
-                  className="text-sm hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800] hover:bg-clip-text hover:text-transparent transition-all"
+                  href="tel:+221123456789"
+                  className="text-sm hover:text-[#FED9B7] transition-colors"
                 >
-                  +33 1 23 45 67 89
+                  +221 77 800 76 98
                 </a>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className="w-5 h-5 text-[#FFD700] flex-shrink-0" />
+                <Mail className="w-5 h-5 text-[##14204d]" />
                 <a
-                  href="mailto:contact@altis.fr"
-                  className="text-sm hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800] hover:bg-clip-text hover:text-transparent transition-all"
+                  href="mailto:contact@senhabita.sn"
+                  className="text-sm hover:text-[#FED9B7] transition-colors"
                 >
-                  contact@altis.fr
+                  contact@senhabita.sn
                 </a>
               </li>
             </ul>
-
-            <div className="mt-4">
-              <p className="text-sm text-gray-400 mb-1">Horaires</p>
-              <p className="text-xs text-gray-500">Lun - Ven : 9h00 - 18h30</p>
-              <p className="text-xs text-gray-500">Sam : 9h00 - 17h00</p>
+            <div className="mt-4 text-sm text-[#14204d]/70">
+              <p className="mb-1">Horaires d'ouverture</p>
+              <p>Lun - Ven: 9h00 - 18h30</p>
+              <p>Sam: 9h00 - 17h00</p>
             </div>
           </div>
 
-          {/* === Newsletter === */}
+          {/* --- Newsletter --- */}
           <div>
-            <h4 className="font-display font-bold text-lg mb-4 bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] bg-clip-text text-transparent">
+            <h4 className="font-display font-bold text-lg mb-4 text-[#14204d]">
               Newsletter
             </h4>
-            <p className="text-gray-300 text-sm mb-4 font-sans">
-              Recevez nos dernières offres et actualités immobilières.
+            <p className="text-[#14204d]/90 text-sm mb-4">
+              Recevez nos offres exclusives et nos conseils immobiliers.
             </p>
             <form className="space-y-3">
               <input
                 type="email"
                 placeholder="Votre email"
-                className="w-full px-4 py-3 rounded-lg bg-[#14204d]border border-[#1f2a5c] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all"
-                aria-label="Adresse email pour la newsletter"
-                required
+                className="w-full px-4 py-3 rounded-lg bg-white/25 border border-[#FED9B7]/30 text-[#14204d] placeholder-[#14204d]/50 focus:outline-none focus:ring-2 focus:ring-[#FED9B7] transition-all"
               />
               <Button
                 variant="primary"
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] hover:opacity-90 text-navy-950 font-semibold py-3 rounded-lg transition-all"
+                className="w-full bg-gradient-to-r from-[#FED9B7] to-[#fef9f8] hover:from-[#fef3e7] hover:to-[#fff9f7] text-[#14204d] font-semibold shadow-md hover:shadow-[#FED9B7]/40 transition-all"
                 type="submit"
               >
-                <Send className="w-4 h-4" />
-                S'abonner
+                <span className="flex items-center gap-2">
+                  <Send className="w-5 h-5 text-[#14204d]" />
+                  <span className="text-base font-semibold">Envoyer le message</span>
+                </span>
               </Button>
             </form>
           </div>
         </div>
 
-        {/* === Bas de page === */}
-        <div className="border-t border-[#14204d] pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-sm">
-          <p className="font-sans">
-            © {new Date().getFullYear()} Sen Habita. Tous droits réservés.
-          </p>
-          <div className="flex gap-6 font-sans">
-            {["Mentions légales", "Confidentialité", "CGU"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800] hover:bg-clip-text hover:text-transparent transition-all"
-              >
-                {item}
-              </a>
-            ))}
+        {/* --- Bas de page --- */}
+        <div className="border-t border-[#14204d]/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[#14204d]/70 text-sm">
+          <p>© 2025 SEN HABITA. Tous droits réservés.</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-[#FED9B7] transition-colors">
+              Mentions légales
+            </a>
+            <a href="#" className="hover:text-[#FED9B7] transition-colors">
+              Confidentialité
+            </a>
+            <a href="#" className="hover:text-[#FED9B7] transition-colors">
+              CGU
+            </a>
           </div>
         </div>
       </div>

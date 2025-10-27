@@ -1,114 +1,112 @@
-import { useState } from "react";
-import { Home, Phone, Mail, Menu, X, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Phone, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../ui/Button";
+import Logo from "../ui/Logo";
+
 
 export default function HeaderEnhanced() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
     { name: "Accueil", path: "/" },
     { name: "Nos biens", path: "/properties" },
     { name: "À propos", path: "/about" },
     { name: "Contact", path: "/contact" },
-    { name: "Admin", path: "/admin" },
   ];
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white/90 backdrop-blur-xl shadow-md"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        scrolled
+          ? "bg-white/80 backdrop-blur-2xl shadow-2xl shadow-[#FED9B7]/30"
+          : "bg-white/60 backdrop-blur-xl"
+      }`}
       role="banner"
     >
-      <div className="container mx-auto px-4 relative">
+      {/* Effet glass + lueur douce */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#FED9B7]/30 via-transparent to-[#14204d]/10 rounded-xl pointer-events-none"></div>
+
+      <div className="container mx-auto px-6 relative">
         <div className="flex justify-between items-center py-4">
-          {/* Logo */}
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-3 group"
-            aria-label="Altis Immobilier - Accueil"
+            aria-label="SEN HABITA - Accueil"
+            className="flex items-center gap-2 group"
           >
-            <div className="relative">
-              {/* Halo doré subtil */}
-              <div className="absolute inset-0 rounded-xl pointer-events-none opacity-0 group-hover:opacity-60 transition-opacity duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/50 via-[#FFC107]/30 to-[#FF9800]/50 blur-xl animate-pulse-slow"></div>
-              </div>
-
-              {/* Symbole du logo */}
-              <div className="relative bg-[##FFFFFF000] p-3 rounded-xl shadow-lg group-hover:shadow-2xl group-hover:scale-105 transition-all duration-300">
-                <Home className="w-7 h-7 text-transparent bg-clip-text bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800]" />
-                <Sparkles className="w-3 h-3 absolute -top-1 -right-1 text-[#FFD700] opacity-80 animate-pulse" />
-              </div>
-            </div>
-
-            {/* Texte du logo */}
-            <div>
-              <h1 className="text-3xl font-bold text-[#14204d]">
-                Sen{" "}
-                <span className="text-3xl font-bold text-[#14204d]">
-                  Habita
-                </span>
-              </h1>
-              <p className="text-xs text-gray-600 font-sans">
-                Votre expert en immobilier
-              </p>
-            </div>
+            <Logo size="md" />
+            {/* <span className="text-xl font-bold text-[#14204d] group-hover:text-[#FED9B7] transition-all duration-500">
+              SEN <span className="text-[#FED9B7]">HABITA</span>
+            </span> */}
           </Link>
 
-          {/* Navigation desktop */}
-          <nav className="hidden lg:flex items-center gap-8" role="navigation">
+          {/* Menu Desktop */}
+          <nav
+            className="hidden lg:flex items-center gap-10"
+            role="navigation"
+            aria-label="Navigation principale"
+          >
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="relative font-medium font-sans group transition-all duration-300"
+                  className={`relative text-base font-medium transition-all duration-500 group ${
+                    isActive
+                      ? "text-[#FED9B7]"
+                      : "text-[#14204d] hover:text-[#FED9B7]"
+                  }`}
                 >
+                  {item.name}
                   <span
-                    className={`inline-block transition-all duration-300 ${
-                      isActive
-                        ? "text-transparent bg-clip-text bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800]"
-                        : "text-[#14204d] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-br group-hover:from-[#FFD700] group-hover:via-[#FFC107] group-hover:to-[#FF9800]"
-                    }`}
-                  >
-                    {item.name}
-                  </span>
-                  <span
-                    className={`absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-[#FFD700] via-[#FFC107] to-[#FF9800] transition-all duration-500 ${
+                    className={`absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] rounded-full transition-all duration-500 ${
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     }`}
-                  />
+                  ></span>
                 </Link>
               );
             })}
           </nav>
 
-          {/* Contacts et bouton */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Contact + Admin */}
+          <div className="hidden lg:flex items-center gap-5">
             <a
-              href="tel:+33123456789"
-              className="flex items-center gap-2 text-[#14204d] group transition-all duration-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800]"
+              href="tel:+221123456789"
+              className="flex items-center gap-2 text-[#14204d] hover:text-[#FED9B7] transition-all duration-300 group"
+              aria-label="Appeler SEN HABITA"
             >
-              <div className="p-2 bg-white/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                <Phone className="w-4 h-4 text-[#FFD700]" />
+              <div className="p-2 bg-white/30 rounded-lg shadow-md group-hover:scale-110 transition-transform">
+                <Phone className="w-4 h-4" />
               </div>
-              <span className="text-sm font-medium">+33 1 23 45 67 89</span>
+              <span className="text-sm font-medium">+221 12 345 67 89</span>
             </a>
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] rounded-xl blur opacity-20 group-hover:opacity-50 transition-opacity"></div>
-              <Button variant="primary" size="md" className="relative">
-                <Mail className="w-4 h-4 mr-2 text-white" />
-                Estimer mon bien
+
+            <Link to="/admin" className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] rounded-xl blur-sm opacity-70 group-hover:opacity-100 transition-all"></div>
+              <Button
+                variant="primary"
+                size="md"
+                className="relative bg-[#14204d] text-white px-5 py-2 rounded-xl shadow-lg hover:scale-105 transition-transform duration-500"
+              >
+                Connexion
               </Button>
-            </div>
+            </Link>
           </div>
 
           {/* Menu mobile */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-[#14204d] hover:bg-[#14204d]/10 rounded-lg transition-all duration-300 hover:scale-110"
+            className="lg:hidden p-2 text-[#14204d] hover:bg-[#FED9B7]/20 rounded-lg transition-all duration-300 hover:scale-110"
             aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={mobileMenuOpen}
           >
@@ -120,11 +118,12 @@ export default function HeaderEnhanced() {
           </button>
         </div>
 
-        {/* Mobile menu */}
+        {/* Menu mobile déroulant */}
         {mobileMenuOpen && (
           <nav
-            className="lg:hidden py-4 border-t border-[#FFD700]/30 backdrop-blur-xl bg-white/90 transition-all duration-500"
+            className="lg:hidden py-5 border-t border-[#FED9B7]/40 animate-slideDown backdrop-blur-2xl bg-white/80 rounded-b-3xl shadow-lg"
             role="navigation"
+            aria-label="Navigation mobile"
           >
             <div className="flex flex-col gap-4">
               {navItems.map((item) => {
@@ -134,27 +133,32 @@ export default function HeaderEnhanced() {
                     key={item.path}
                     to={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`py-2 px-4 rounded-lg font-medium transition-all duration-300 ${
+                    className={`py-2 px-4 rounded-lg font-medium text-center transition-all duration-400 ${
                       isActive
-                        ? "bg-gradient-to-br from-[#FFD700] via-[#FFC107] to-[#FF9800] text-[#14204d] shadow-lg"
-                        : "text-[#14204d] hover:bg-[#14204d]/10"
+                        ? "bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] shadow-md"
+                        : "text-[#14204d] hover:bg-[#FED9B7]/30"
                     }`}
                   >
                     {item.name}
                   </Link>
                 );
               })}
-              <div className="pt-4 border-t border-[#FFD700]/30 flex flex-col gap-3">
-                <Button variant="primary" className="w-full">
-                  <Mail className="w-4 h-4 mr-2 text-white" />
-                  Estimer mon bien
-                </Button>
-                <a
-                  href="tel:+33123456789"
-                  className="flex items-center justify-center gap-2 text-[#14204d] py-2 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-br hover:from-[#FFD700] hover:via-[#FFC107] hover:to-[#FF9800]"
+
+              <div className="pt-4 border-t border-[#FED9B7]/40">
+                <Link
+                  to="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-center w-full bg-[#14204d] text-white py-2 rounded-xl shadow-md hover:scale-105 transition-transform duration-500"
                 >
-                  <Phone className="w-4 h-4 text-[#FFD700]" />
-                  +33 1 23 45 67 89
+                  Admin
+                </Link>
+
+                <a
+                  href="tel:+221123456789"
+                  className="flex items-center justify-center gap-2 text-[#14204d] py-3 hover:text-[#FED9B7] transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span className="text-sm font-medium">+221 12 345 67 89</span>
                 </a>
               </div>
             </div>

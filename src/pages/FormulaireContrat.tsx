@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { FileText, ArrowLeft, Edit, Trash2, Download, PlusCircle } from "lucide-react";
+import {
+  FileText,
+  ArrowLeft,
+  Edit,
+  Trash2,
+  Download,
+  Search,
+} from "lucide-react";
 
 interface Client {
   id: number;
@@ -32,7 +39,9 @@ const Contrats: React.FC = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [proprietes, setProprietes] = useState<Propriete[]>([]);
   const [contrats, setContrats] = useState<Contrat[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
+  // États du formulaire
   const [clientId, setClientId] = useState<number | "">("");
   const [proprieteId, setProprieteId] = useState<number | "">("");
   const [typeContrat, setTypeContrat] = useState("");
@@ -41,6 +50,7 @@ const Contrats: React.FC = () => {
   const [montant, setMontant] = useState("");
   const [description, setDescription] = useState("");
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const API_URL = "http://localhost:3000";
 
@@ -73,9 +83,7 @@ const Contrats: React.FC = () => {
       description,
     };
 
-    if (!editingId) {
-      contratData.id = Math.floor(1000 + Math.random() * 9000);
-    }
+    if (!editingId) contratData.id = Math.floor(1000 + Math.random() * 9000);
 
     try {
       if (editingId) {
@@ -94,19 +102,23 @@ const Contrats: React.FC = () => {
         Swal.fire("Ajouté ✅", "Nouveau contrat ajouté", "success");
       }
 
-      // Reset form
-      setClientId("");
-      setProprieteId("");
-      setTypeContrat("");
-      setDateDebut("");
-      setDateFin("");
-      setMontant("");
-      setDescription("");
-      setEditingId(null);
+      resetForm();
+      setShowModal(false);
       fetchData();
     } catch {
       Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
+  };
+
+  const resetForm = () => {
+    setClientId("");
+    setProprieteId("");
+    setTypeContrat("");
+    setDateDebut("");
+    setDateFin("");
+    setMontant("");
+    setDescription("");
+    setEditingId(null);
   };
 
   const deleteContrat = async (id: number) => {
@@ -134,7 +146,7 @@ const Contrats: React.FC = () => {
     setDateFin(contrat.dateFin);
     setMontant(String(contrat.montant));
     setDescription(contrat.description);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setShowModal(true);
   };
 
   const downloadContrat = (contrat: Contrat) => {
@@ -165,135 +177,58 @@ const Contrats: React.FC = () => {
 
   const handleBack = () => window.history.back();
 
-  const selectedClient = clients.find((cl) => cl.id === clientId);
-  const selectedPropriete = proprietes.find((p) => p.id === proprieteId);
+  // ====== Recherche ======
+  const filteredContrats = contrats.filter((c) => {
+    const client = clients.find((cl) => cl.id === c.clientId);
+    const propriete = proprietes.find((p) => p.id === c.proprieteId);
+    const search = searchTerm.toLowerCase();
+
+    return (
+      client?.nom.toLowerCase().includes(search) ||
+      client?.prenom?.toLowerCase().includes(search) ||
+      propriete?.titre.toLowerCase().includes(search) ||
+      c.typeContrat.toLowerCase().includes(search)
+    );
+  });
 
   return (
     <div className="p-8 bg-white rounded-2xl shadow-lg max-w-7xl mx-auto mt-10">
-      {/* ====== FORMULAIRE ====== */}
+      {/* ====== HEADER ====== */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-[#FFD700] flex items-center gap-2">
-          <PlusCircle className="w-6 h-6" />
-          {editingId ? "Modifier un contrat" : "Ajouter un contrat"}
-        </h1>
+        <button
+          onClick={handleBack}
+          className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition text-sm"
+        >
+          <ArrowLeft className="w-4 h-4" /> Retour
+        </button>
+       
+        <button
+          onClick={() => {
+            resetForm();
+            setShowModal(true);
+          }}
+          className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm"
+        >
+           <FileText className="w-4 h-4" />  Nouveau Contrat
+        </button>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-gray-50 p-6 rounded-xl grid grid-cols-1 md:grid-cols-2 gap-4 mb-10"
-      >
-        {/* === Client === */}
-        <select
-          value={clientId}
-          onChange={(e) => setClientId(Number(e.target.value))}
-          className="border border-gray-300 p-3 rounded-lg"
-          required
-        >
-          <option value="">-- Sélectionner un client --</option>
-          {clients.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.nom} {c.prenom ?? ""} — {c.email ?? "Aucun email"} ({c.telephone ?? "Pas de téléphone"})
-            </option>
-          ))}
-        </select>
-
-        {/* === Propriété === */}
-        <select
-          value={proprieteId}
-          onChange={(e) => setProprieteId(Number(e.target.value))}
-          className="border border-gray-300 p-3 rounded-lg"
-          required
-        >
-          <option value="">-- Sélectionner une propriété --</option>
-          {proprietes.map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.titre} ({p.type}) — {p.adresse ?? "Adresse inconnue"}
-            </option>
-          ))}
-        </select>
-
-        {/* Résumé */}
-        {selectedClient && (
-          <div className="md:col-span-2 p-3 bg-blue-50 rounded-lg text-sm text-gray-700">
-            <strong>Client sélectionné :</strong> {selectedClient.nom} {selectedClient.prenom} —{" "}
-            {selectedClient.email} / {selectedClient.telephone}
-          </div>
-        )}
-
-        {selectedPropriete && (
-          <div className="md:col-span-2 p-3 bg-green-50 rounded-lg text-sm text-gray-700">
-            <strong>Propriété sélectionnée :</strong> {selectedPropriete.titre} ({selectedPropriete.type}) —{" "}
-            {selectedPropriete.adresse}
-          </div>
-        )}
-
-        <select
-          value={typeContrat}
-          onChange={(e) => setTypeContrat(e.target.value)}
-          className="border border-gray-300 p-3 rounded-lg"
-          required
-        >
-          <option value="">-- Type de contrat --</option>
-          <option value="Location">Location</option>
-          <option value="Vente">Vente</option>
-        </select>
-
+      {/* ====== BARRE DE RECHERCHE ====== */}
+      <div className="flex   items-center mb-6 border border-gray-300 rounded-full overflow-hidden max-w-md ">
+        <Search className="w-5 h-5 text-gray-500 ml-2" />
         <input
-          type="date"
-          value={dateDebut}
-          onChange={(e) => setDateDebut(e.target.value)}
-          className="border border-gray-300 p-3 rounded-lg"
-          required
+          type="text"
+          placeholder="Rechercher un contrat..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 w-full outline-none"
         />
-        <input
-          type="date"
-          value={dateFin}
-          onChange={(e) => setDateFin(e.target.value)}
-          className="border border-gray-300 p-3 rounded-lg"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Montant"
-          value={montant}
-          onChange={(e) => setMontant(e.target.value)}
-          className="border border-gray-300 p-3 rounded-lg"
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="border border-gray-300 p-3 rounded-lg md:col-span-2"
-        ></textarea>
+      </div>
 
-        <div className="md:col-span-2 flex justify-between items-center">
-          <button
-            onClick={handleBack}
-            type="button"
-            className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-gray-500 transition text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Retour
-          </button>
-          <button
-            type="submit"
-            className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm"
-          >
-            <FileText className="w-4 h-4" />
-            {editingId ? "Modifier" : "Ajouter"}
-          </button>
-        </div>
-      </form>
-
-      {/* ====== LISTE DES CONTRATS ====== */}
-      <h2 className="text-2xl font-semibold mb-4 text-black-700 flex items-center gap-2">
-        <FileText className="w-5 h-5" /> Liste des contrats
-      </h2>
-
+      {/* ====== TABLEAU ====== */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 text-sm">
-          <thead className="bg-gradient-to-r from-[#FFD700] via-[#FFC107] to-[#FF9800]">
+        <table className="min-w-full border  border-gray-200 rounded-lg overflow-hidden">
+          <thead className="bg-gray-600  text-gray-200">
             <tr>
               <th className="border p-3">ID</th>
               <th className="border p-3">Client</th>
@@ -305,58 +240,177 @@ const Contrats: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {contrats.map((c) => {
-              const client = clients.find((cl) => Number(cl.id) === c.clientId);
-              const propriete = proprietes.find((p) => Number(p.id) === c.proprieteId);
+            {filteredContrats.length > 0 ? (
+              filteredContrats.map((c) => {
+                const client = clients.find((cl) => Number(cl.id) === c.clientId);
+                const propriete = proprietes.find(
+                  (p) => Number(p.id) === c.proprieteId
+                );
 
-              return (
-                <tr key={c.id} className="hover:bg-gray-50">
-                  <td className="border p-3">{c.id}</td>
-                  <td className="border p-3">
-                    {client ? (
-                      <>
-                        {client.nom} {client.prenom} <br />
-                        <span className="text-gray-500 text-xs">{client.email}</span>
-                      </>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td className="border p-3">
-                    {propriete ? propriete.titre : "—"} <br />
-                    <span className="text-gray-500 text-xs">{propriete?.adresse}</span>
-                  </td>
-                  <td className="border p-3">{c.typeContrat}</td>
-                  <td className="border p-3">
-                    {c.dateDebut} → {c.dateFin}
-                  </td>
-                  <td className="border p-3">{c.montant.toLocaleString()} FCFA</td>
-                  <td className="border p-3 flex gap-2 justify-center">
-                    <button
-                      onClick={() => editContrat(c)}
-                      className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => deleteContrat(c.id!)}
-                      className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => downloadContrat(c)}
-                      className="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                    >
-                      <Download className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                return (
+                  <tr key={c.id} className="hover:bg-gray-50">
+                    <td className="border p-3">{c.id}</td>
+                    <td className="border p-3">
+                      {client ? (
+                        <>
+                          {client.nom} {client.prenom}
+                          <br />
+                          <span className="text-gray-500 text-xs">
+                            {client.email}
+                          </span>
+                        </>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                    <td className="border p-3">
+                      {propriete ? propriete.titre : "—"}
+                      <br />
+                      <span className="text-gray-500 text-xs">
+                        {propriete?.adresse}
+                      </span>
+                    </td>
+                    <td className="border p-3">{c.typeContrat}</td>
+                    <td className="border p-3">
+                      {c.dateDebut} → {c.dateFin}
+                    </td>
+                    <td className="border p-3">
+                      {c.montant.toLocaleString()} FCFA
+                    </td>
+                    <td className="border p-3 flex gap-2 justify-center">
+                      <button
+                        onClick={() => editContrat(c)}
+                        className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => deleteContrat(c.id!)}
+                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => downloadContrat(c)}
+                        className="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={7} className="text-center p-4 text-gray-500">
+                  Aucun contrat trouvé
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
+
+      {/* ====== MODAL AJOUT / MODIF ====== */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-2xl shadow-lg">
+            <h2 className="text-xl font-bold mb-4 text-[#FFD700] flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              {editingId ? "Modifier le contrat" : "Ajouter un contrat"}
+            </h2>
+
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <select
+                value={clientId}
+                onChange={(e) => setClientId(Number(e.target.value))}
+                className="border border-gray-300 p-3 rounded-lg"
+                required
+              >
+                <option value="">-- Sélectionner un client --</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nom} {c.prenom ?? ""} — {c.email ?? "Aucun email"}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={proprieteId}
+                onChange={(e) => setProprieteId(Number(e.target.value))}
+                className="border border-gray-300 p-3 rounded-lg"
+                required
+              >
+                <option value="">-- Sélectionner une propriété --</option>
+                {proprietes.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.titre} ({p.type})
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={typeContrat}
+                onChange={(e) => setTypeContrat(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg"
+                required
+              >
+                <option value="">-- Type de contrat --</option>
+                <option value="Location">Location</option>
+                <option value="Vente">Vente</option>
+              </select>
+
+              <input
+                type="date"
+                value={dateDebut}
+                onChange={(e) => setDateDebut(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg"
+                required
+              />
+              <input
+                type="date"
+                value={dateFin}
+                onChange={(e) => setDateFin(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Montant"
+                value={montant}
+                onChange={(e) => setMontant(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg"
+                required
+              />
+              <textarea
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="border border-gray-300 p-3 rounded-lg md:col-span-2"
+              ></textarea>
+
+              <div className="md:col-span-2 flex justify-between items-center mt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                >
+                  {editingId ? "Modifier" : "Ajouter"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

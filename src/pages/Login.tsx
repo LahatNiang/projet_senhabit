@@ -1,48 +1,143 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Lock, User, AlertCircle } from "lucide-react";
+import immobilierImg from "../assets/img.png";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const API_URL = "http://localhost:3000/users";
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Ici tu peux ajouter vérification API si nécessaire
-    if (username && password) {
-      login(username);
-      navigate("/admin"); // redirige vers le dashboard
+    setError("");
+
+    if (!username || !password) {
+      setError("Veuillez remplir tous les champs !");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_URL}?username=${username}`);
+      const users = await res.json();
+
+      if (users.length === 0) {
+        setError("Ce compte n'existe pas. Veuillez vous inscrire.");
+        return;
+      }
+
+      const user = users[0];
+      if (user.password === password) {
+        login(username);
+        if (remember) {
+          localStorage.setItem("rememberUser", username);
+        } else {
+          localStorage.removeItem("rememberUser");
+        }
+        navigate("/admin");
+      } else {
+        setError("Mot de passe incorrect !");
+      }
+    } catch (error) {
+      console.error("Erreur de connexion :", error);
+      setError("Erreur serveur. Réessayez plus tard.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-10 rounded-2xl shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center">Connexion</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Nom d'utilisateur"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    <div className="min-h-screen flex items-center justify-center bg-gray-300">
+      <div className="flex flex-col md:flex-row bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden max-w-5xl">
+        {/* Image gauche */}
+        <div className="hidden md:block w-1/2">
+          <img
+            src={immobilierImg}
+            alt="Immeuble moderne"
+            className="w-full h-full object-cover"
           />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition"
-          >
-            Se connecter
-          </button>
-        </form>
+        </div>
+
+        {/* Formulaire droit */}
+        <div className="w-full md:w-1/2 p-10 md:p-24 flex flex-col justify-center">
+          <h2 className="text-3xl font-bold mb-6 text-center text-orange-900">
+            Connexion
+          </h2>
+
+          {error && (
+            <div className="flex items-center gap-2 bg-red-100 text-red-600 border border-red-300 rounded-md p-3 mb-4">
+              <AlertCircle className="w-5 h-5" />
+              <span className="text-sm">{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Nom d’utilisateur */}
+            <div className="flex items-center border rounded-lg p-4 focus-within:ring-2 focus-within:ring-orange-900 w-full">
+              <User className="text-gray-500 mr-3" />
+              <input
+                type="text"
+                placeholder="Nom d'utilisateur"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full text-lg focus:outline-none bg-transparent"
+              />
+            </div>
+
+            {/* Mot de passe */}
+            <div className="flex items-center border rounded-lg p-4 focus-within:ring-2 focus-within:ring-orange-900 w-full">
+              <Lock className="text-gray-500 mr-3" />
+              <input
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full text-lg focus:outline-none bg-transparent"
+              />
+            </div>
+
+            {/* Options bas du formulaire */}
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                  className="accent-green-600"
+                />
+                Se souvenir de moi
+              </label>
+              <Link
+                to="/forgot-password"
+                className="text-indigo-600 hover:underline font-medium"
+              >
+                Mot de passe oublié ?
+              </Link>
+            </div>
+
+            {/* Bouton connexion */}
+            <button
+              type="submit"
+              className="w-full bg-green-900 text-white p-4 rounded-lg hover:bg-gray-400 transition font-semibold text-lg"
+            >
+              Se connecter
+            </button>
+          </form>
+
+          <p className="text-center text-gray-600 text-sm mt-6">
+            Pas encore de compte ?{" "}
+            <Link
+              to="/register"
+              className="text-indigo-600 hover:underline font-medium"
+            >
+              S'inscrire
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
