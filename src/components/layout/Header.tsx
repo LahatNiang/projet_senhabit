@@ -51,13 +51,13 @@ export default function Header() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "backdrop-blur-2xl bg-white/10 border-b border-white/20 shadow-2xl"
-          : "backdrop-blur-xl bg-white/5 border-b border-white/10"
+          ? "backdrop-blur-2xl bg-[#14204d]/90 border-b border-[#FED9B7]/20 shadow-2xl"
+          : "backdrop-blur-xl bg-[#14204d]/80 border-b border-[#FED9B7]/10"
       }`}
       role="banner"
     >
       {/* Effet de lumière dynamique */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#FED9B7]/10 to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-6 relative">
         <div className="flex justify-between items-center py-4">
@@ -76,19 +76,19 @@ export default function Header() {
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
               className="absolute -top-2 -right-2"
             >
-              <Crown className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+              <Crown className="w-4 h-4 text-[#FED9B7] fill-[#FED9B7]" />
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="relative p-3 rounded-2xl bg-gradient-to-br from-[#FF6B35] to-[#FF8E53] shadow-2xl shadow-orange-500/30 backdrop-blur-md group"
+              className="relative p-3 rounded-2xl bg-gradient-to-br from-[#14204d] to-[#1e2a5a] shadow-2xl shadow-[#14204d]/50 backdrop-blur-md group border border-[#FED9B7]/20"
             >
-              <Home className="w-7 h-7 text-white" />
+              <Home className="w-7 h-7 text-[#FED9B7]" />
 
               {/* Effet de scintillement */}
               <motion.div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-[#FED9B7]/10 to-transparent"
                 initial={{ x: "-100%" }}
                 whileHover={{ x: "100%" }}
                 transition={{ duration: 0.8, ease: "easeInOut" }}
@@ -101,17 +101,17 @@ export default function Header() {
                 whileHover={{ scale: 1.05 }}
               >
                 SEN{" "}
-                <span className="bg-gradient-to-r from-[#FF8E53] to-[#FF6B35] text-transparent bg-clip-text">
+                <span className="bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-transparent bg-clip-text">
                   HABITA
                 </span>
               </motion.h1>
               <motion.p
-                className="text-xs text-white/80 font-sans flex items-center gap-1"
+                className="text-xs text-[#FED9B7]/80 font-sans flex items-center gap-1"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <Sparkles className="w-3 h-3 text-yellow-400" />
+                <Sparkles className="w-3 h-3 text-[#FED9B7]" />
                 Excellence Immobilière
               </motion.p>
             </div>
@@ -119,7 +119,7 @@ export default function Header() {
 
           {/* ✅ Navigation desktop premium avec effets avancés */}
           <nav
-            className="hidden lg:flex items-center gap-1 backdrop-blur-md bg-white/5 rounded-2xl p-2 border border-white/10 shadow-2xl"
+            className="hidden lg:flex items-center gap-1 backdrop-blur-md bg-[#14204d]/60 rounded-2xl p-2 border border-[#FED9B7]/20 shadow-2xl"
             role="navigation"
             aria-label="Navigation principale"
           >
@@ -131,13 +131,13 @@ export default function Header() {
                   href={`#${item.toLowerCase().replace(" ", "")}`}
                   whileHover={{
                     scale: 1.05,
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    backgroundColor: "rgba(254, 217, 183, 0.1)",
                   }}
                   whileTap={{ scale: 0.95 }}
                   className={`relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                     isActive
-                      ? "text-white bg-white/20 shadow-lg"
-                      : "text-white/80 hover:text-white hover:bg-white/5"
+                      ? "text-white bg-[#FED9B7]/20 shadow-lg border border-[#FED9B7]/30"
+                      : "text-[#FED9B7]/80 hover:text-white hover:bg-[#FED9B7]/5"
                   }`}
                   style={{
                     textShadow: "0 2px 4px rgba(0,0,0,0.3)",
@@ -148,7 +148,7 @@ export default function Header() {
 
                     {/* ✅ Ligne de soulignement animée */}
                     <motion.span
-                      className="absolute bottom-2 left-1/2 h-0.5 bg-gradient-to-r from-[#FF8E53] to-[#FF6B35] rounded-full"
+                      className="absolute bottom-2 left-1/2 h-0.5 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] rounded-full"
                       initial={{ width: 0, x: "-50%" }}
                       animate={{
                         width: isActive ? "80%" : "0%",
@@ -170,15 +170,15 @@ export default function Header() {
                         }}
                       >
                         <span className="relative flex h-3 w-3">
-                          <span className="absolute inline-flex h-full w-full rounded-full bg-[#FF6B35] opacity-80 animate-ping"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-[#FF8E53] to-[#FF6B35] shadow-lg"></span>
+                          <span className="absolute inline-flex h-full w-full rounded-full bg-[#FED9B7] opacity-80 animate-ping"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] shadow-lg"></span>
                         </span>
                       </motion.span>
                     )}
 
                     {/* ✅ Effet de particules sur hover */}
                     <motion.div
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF8E53]/20 to-[#FF6B35]/20"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FED9B7]/10 to-[#f7b79c]/10"
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
@@ -193,11 +193,11 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-4">
             <motion.a
               href="tel:+221772345678"
-              className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 text-white hover:bg-white/20 transition-all group"
+              className="flex items-center gap-3 bg-[#14204d]/60 backdrop-blur-md px-4 py-2 rounded-xl border border-[#FED9B7]/20 text-[#FED9B7] hover:bg-[#FED9B7]/10 transition-all group"
               aria-label="Appeler Sen Habita"
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 0 30px rgba(255, 107, 53, 0.4)",
+                boxShadow: "0 0 30px rgba(254, 217, 183, 0.4)",
               }}
               whileTap={{ scale: 0.95 }}
             >
@@ -205,9 +205,9 @@ export default function Header() {
                 animate={{ rotate: [0, 10, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <Phone className="w-4 h-4 text-[#FF8E53]" />
+                <Phone className="w-4 h-4 text-[#FED9B7]" />
               </motion.div>
-              <span className="text-sm font-semibold text-white">
+              <span className="text-sm font-semibold text-[#FED9B7]">
                 +221 77 234 56 78
               </span>
             </motion.a>
@@ -216,11 +216,11 @@ export default function Header() {
               href="/login"
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 0 40px rgba(255, 107, 53, 0.6)",
+                boxShadow: "0 0 40px rgba(254, 217, 183, 0.6)",
                 y: -2,
               }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-3 bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] text-white px-6 py-3 rounded-xl shadow-2xl shadow-orange-500/40 font-semibold transition-all duration-300 relative overflow-hidden group"
+              className="flex items-center gap-3 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] px-6 py-3 rounded-xl shadow-2xl shadow-[#FED9B7]/40 font-semibold transition-all duration-300 relative overflow-hidden group"
             >
               {/* Effet de brillance */}
               <motion.div
@@ -238,7 +238,7 @@ export default function Header() {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
               >
-                <Star className="w-3 h-3 text-yellow-300 fill-yellow-300" />
+                <Star className="w-3 h-3 text-[#14204d] fill-[#14204d]" />
               </motion.div>
             </motion.a>
           </div>
@@ -246,12 +246,12 @@ export default function Header() {
           {/* ✅ Bouton menu mobile premium */}
           <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-3 text-white hover:bg-white/20 rounded-xl transition-all backdrop-blur-md border border-white/10 shadow-lg relative"
+            className="lg:hidden p-3 text-[#FED9B7] hover:bg-[#FED9B7]/10 rounded-xl transition-all backdrop-blur-md border border-[#FED9B7]/20 shadow-lg relative"
             aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={mobileMenuOpen}
             whileHover={{
               scale: 1.05,
-              backgroundColor: "rgba(255, 255, 255, 0.15)",
+              backgroundColor: "rgba(254, 217, 183, 0.15)",
             }}
             whileTap={{ scale: 0.95 }}
           >
@@ -287,12 +287,12 @@ export default function Header() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="lg:hidden py-6 mt-2 backdrop-blur-2xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden"
+              className="lg:hidden py-6 mt-2 backdrop-blur-2xl bg-[#14204d]/90 border border-[#FED9B7]/30 rounded-2xl shadow-2xl relative overflow-hidden"
               role="navigation"
               aria-label="Navigation mobile"
             >
               {/* Effet de fond animé */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B35]/10 to-[#FF8E53]/5" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#FED9B7]/10 to-[#f7b79c]/5" />
 
               <div className="relative z-10 flex flex-col gap-2 px-4">
                 {menuItems.map((item, i) => {
@@ -303,8 +303,8 @@ export default function Header() {
                       href={`#${item.toLowerCase().replace(" ", "")}`}
                       className={`relative px-4 py-3 rounded-xl font-semibold transition-all ${
                         isActive
-                          ? "text-white bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] shadow-lg"
-                          : "text-white/90 hover:text-white hover:bg-white/10"
+                          ? "text-[#14204d] bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] shadow-lg"
+                          : "text-[#FED9B7]/90 hover:text-white hover:bg-[#FED9B7]/10"
                       }`}
                       whileHover={{ x: 10 }}
                       onClick={() => setMobileMenuOpen(false)}
@@ -314,8 +314,11 @@ export default function Header() {
                           <motion.span
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
-                            className="w-2 h-2 bg-white rounded-full"
-                          />
+                            className="relative flex h-2 w-2"
+                          >
+                            <span className="absolute inline-flex h-full w-full rounded-full bg-[#14204d] opacity-70 animate-ping"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#14204d]"></span>
+                          </motion.span>
                         )}
                         {item}
                       </span>
@@ -323,12 +326,12 @@ export default function Header() {
                   );
                 })}
 
-                <div className="pt-4 mt-4 border-t border-white/20">
+                <div className="pt-4 mt-4 border-t border-[#FED9B7]/20">
                   <motion.a
                     href="/admin/login"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] text-white px-5 py-3 rounded-xl shadow-lg font-semibold"
+                    className="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] px-5 py-3 rounded-xl shadow-lg font-semibold"
                   >
                     <Crown className="w-4 h-4" />
                     Espace Premium
