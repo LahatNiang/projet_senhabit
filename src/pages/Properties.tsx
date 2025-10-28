@@ -186,6 +186,10 @@ export default function Properties() {
     currentPage * propertiesPerPage
   );
 
+  const handleViewDetails = (propertyId: string) => {
+    navigate(`/property/${propertyId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#fef9f8] py-12">
       <div className="container mx-auto px-4">
@@ -597,7 +601,7 @@ export default function Properties() {
                   </div>
 
                   <motion.button
-                    onClick={() => navigate(`/properties/${property.id}`)}
+                    onClick={() => handleViewDetails(property.id)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
