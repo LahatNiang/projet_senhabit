@@ -30,7 +30,7 @@ const propertyImages = {
     "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop",
     "https://images.unsplash.com/photo-1574643156929-51fa098b0394?w=800&h=600&fit=crop",
   ],
-  maison: [
+  chambre: [
     "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&h=600&fit=crop",
     "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
@@ -55,7 +55,7 @@ const propertyImages = {
 
 // Génération avec images immobilières
 const generateProperties = () => {
-  const types = ["appartement", "maison", "villa", "studio"];
+  const types = ["appartement", "chambre", "villa", "studio"];
   const locations = [
     "Dakar Plateau",
     "Mermoz",
@@ -187,7 +187,7 @@ export default function Properties() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-[#fef9f8] py-12">
+    <div className="min-h-screen bg-gray-300 py-12">
       <div className="container mx-auto px-4">
         {/* Hero Section Améliorée */}
         <motion.div
@@ -287,9 +287,9 @@ export default function Properties() {
                   setCurrentPage(1);
                 }}
               >
-                <option value="">Type de bien</option>
+                <option value="">Type de biens</option>
                 <option value="appartement">Appartement</option>
-                <option value="maison">Maison</option>
+                <option value="chambre">Chambre</option>
                 <option value="villa">Villa</option>
                 <option value="studio">Studio</option>
               </select>

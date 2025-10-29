@@ -31,7 +31,7 @@ const data = [
   { name: "Juin", ventes: 239 },
 ];
 
-const COLORS = ["#4F46E5", "#22C55E", "#F59E0B", "#8B5CF6"];
+const COLORS = ["#4F46E5", "#626366ff", "#f3a622ff", "#8B5CF6"];
 
 const AdminDashboard: React.FC = () => {
   const [nbProprietes, setNbProprietes] = useState(0);
@@ -72,36 +72,36 @@ const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-2">
-        <Home className="text-indigo-1000 w-8 h-8" />
+    <div className="p-6 ">
+      <h1 className="text-3xl text-[#14204D] font-bold text-gray-800 mb-10 flex items-center gap-2">
+        <Home className="text-[#FED9B7] w-8 h-8" />
         Tableau de bord
       </h1>
 
       {/* === Statistiques principales === */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <div className="bg-purple-500 text-white shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
-          <Home className="w-8 h-8 mb-2 text-black" />
-          <h1 className="text-black opacity-80">Total Biens</h1>
-          <p className="text-3xl font-bold text-black">{totalBiens}</p>
+        <div className="bg-[#14204D] text-[#FED9B7] shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Home className="w-8 h-8 mb-2 text-[#FED9B7]" />
+          <h1 className=" text-[#FED9B7] ">Total Biens</h1>
+          <p className="text-3xl font-bold text-[#FED9B7]">{totalBiens}</p>
         </div>
 
-        <div className="bg-indigo-600 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
-          <Building2 className="w-8 h-8 mb-2 text-indigo-1000" />
-          <h1 className="text-black ">Propriétés</h1>
-          <p className="text-3xl font-bold text-indigo-1000">{nbProprietes}</p>
+        <div className="bg-[#FED9B7] shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Building2 className="w-8 h-8 mb-2 text-[#14204D]" />
+          <h1 className=" text-[#14204D]">Propriétés</h1>
+          <p className="text-3xl font-bold text-[#14204D]">{nbProprietes}</p>
         </div>
 
-        <div className="bg-green-400 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
-          <Users className="w-8 h-8 mb-2 text-indigo-1000" />
-          <h1 className="text-black">Clients actifs</h1>
-          <p className="text-3xl font-bold text-indigo-1000">{nbClients}</p>
+        <div className="bg-gray-300 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Users className="w-8 h-8 mb-2 text-[#14204D]" />
+          <h1 className="text-sm text-[#14204D]">Clients actifs</h1>
+          <p className="text-3xl font-bold text-[#14204D]">{nbClients}</p>
         </div>
 
-        <div className="bg-yellow-500 shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
-          <Eye className="w-8 h-8 mb-2 text-indigo-1000" />
-          <h1 className="text-black">Visites</h1>
-          <p className="text-3xl font-bold text-indigo-1000">{nbVisites}</p>
+        <div className="bg-[#f3a622ff] shadow rounded-2xl p-5 text-center flex flex-col items-center justify-center hover:scale-105 transition">
+          <Eye className="w-8 h-8 mb-2 text-[#14204D]" />
+          <h1 className="text-sm text-[#14204D]">Visites</h1>
+          <p className="text-3xl font-bold text-[#14204D]">{nbVisites}</p>
         </div>
       </div>
 
@@ -110,7 +110,7 @@ const AdminDashboard: React.FC = () => {
         {/* Bar Chart */}
         <div className="bg-white shadow rounded-2xl p-5">
           <h2 className="text-lg font-semibold mb-4 text-gray-700 flex items-center gap-2">
-            <TrendingUp className="text-indigo-800" />
+            <TrendingUp className="text-indigo-500" />
             Ventes Mensuelles
           </h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -119,7 +119,7 @@ const AdminDashboard: React.FC = () => {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="ventes" fill="#030127bb" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="ventes" fill="#4F46E5" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

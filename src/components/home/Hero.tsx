@@ -266,7 +266,7 @@ export default function Hero() {
                     Appartement
                   </option>
                   <option value="maison" className="bg-[#14204d] text-white">
-                    Maison
+                    Chambre
                   </option>
                   <option value="villa" className="bg-[#14204d] text-white">
                     Villa

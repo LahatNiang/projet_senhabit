@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { UserPlus, ArrowLeft } from "lucide-react";
+import { UserPlus, ArrowLeft ,Edit,Trash2} from "lucide-react";
 import type { Client } from "../types/client";
 
 const ListClients: React.FC = () => {
@@ -128,12 +128,12 @@ const ListClients: React.FC = () => {
   );
 
   return (
-    <div className="p-8 bg-gray-100 rounded-2xl shadow-lg max-w-6xl mx-auto mt-10">
+    <div className="p-8  border-2 border-[#FED9B7] bg-gray-200 rounded-2xl shadow-lg max-w-6xl mx-auto mt-10 ">
       {/* En-tête */}
       <div className="flex justify-between items-center mb-8">
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-gray-400 transition text-sm"
+          className="flex items-center gap-2 bg-[#14204D] text-[#FED9B7] px-3 py-2 rounded-lg hover:bg-gray-700   transition text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           Retour
@@ -141,7 +141,7 @@ const ListClients: React.FC = () => {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm"
+          className="flex items-center gap-2 bg-[#14204D] text-[#FED9B7] px-4 py-2 rounded-lg hover:bg-gray-700 transition text-sm"
         >
           <UserPlus className="w-4 h-4" />
           Ajouter un client
@@ -155,7 +155,7 @@ const ListClients: React.FC = () => {
           placeholder="Rechercher"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full border border-black rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-gray-100"
+          className="w-full border-2 border-[#FED9B7] rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
         />
         <svg
           className="w-5 h-5 text-gray-600 absolute left-3 top-2.5 pointer-events-none"
@@ -176,7 +176,7 @@ const ListClients: React.FC = () => {
       {/* 🧾 Tableau des clients */}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-800 rounded-lg overflow-hidden">
-          <thead className="bg-gray-300 text-gray-800">
+          <thead className="bg-[#FED9B7] text-[#14204D] ">
             <tr>
               <th className="p-3 border text-left">ID</th>
               <th className="p-3 border text-left">Nom</th>
@@ -199,13 +199,13 @@ const ListClients: React.FC = () => {
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm"
                         onClick={() => editClient(client)}
                       >
-                        Modifier
+                        <Edit className="w-4 h-4" />
                       </button>
                       <button
                         className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm"
                         onClick={() => deleteClient(client.id, client.nom)}
                       >
-                        Supprimer
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </td>

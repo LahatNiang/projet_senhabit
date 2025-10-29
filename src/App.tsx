@@ -5,7 +5,8 @@ import Home from "./pages/Home";
 import PropertyDetail from "./pages/PropertyDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import AdminLayout from "./pages/AdminLayout";
+import AdminLayout from "./pages/AdminLayout"; // ✅ ton layout admin
+import AdminDashboard from "./pages/AdminDashboard"; // ✅ ton tableau de bord admin
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,11 +16,12 @@ import ListClients from "./pages/ListClients";
 import ListProprietes from "./pages/ListProprietes";
 import FormulaireContrat from "./pages/FormulaireContrat";
 import ForgotPassword from "./pages/ForgotPassword";
-import Properties from './pages/Properties';
+import Properties from "./pages/Properties";
+
 function AppContent() {
   const location = useLocation();
 
-  // 🧩 Liste des routes où cacher header et footer
+  // 🧩 Liste des routes où cacher le header et le footer
   const hiddenLayoutPaths = [
     "/admin",
     "/login",
@@ -28,8 +30,7 @@ function AppContent() {
     "/contrats",
     "/register",
     "/logout",
-    "/forgot-password"
-    
+    "/forgot-password",
   ];
 
   // Vérifie si la route actuelle commence par un des chemins ci-dessus
@@ -44,20 +45,20 @@ function AppContent() {
 
       <main className={!hideLayout ? "pt-20" : ""}>
         <Routes>
-          <Route path="/properties" element={<Properties />} />
+          {/* 🌍 Routes publiques */}
           <Route path="/" element={<Home />} />
+          <Route path="/properties" element={<Properties />} />
           <Route path="/property/:id" element={<PropertyDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* 🔐 Authentification */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/listclients" element={<ListClients />} />
-          <Route path="/proprietes" element={<ListProprietes />} />
-          <Route path="/contrats" element={<FormulaireContrat />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
-
+          {/* 🏢 Pages administratives accessibles via AdminLayout */}
           <Route
             path="/admin/*"
             element={
@@ -65,7 +66,13 @@ function AppContent() {
                 <AdminLayout />
               </PrivateRoute>
             }
-          />
+          >
+            {/* 👇 Ici on place les sous-routes de l’admin */}
+            <Route index element={<AdminDashboard />} /> {/* /admin */}
+            <Route path="clients" element={<ListClients />} /> {/* /admin/clients */}
+            <Route path="proprietes" element={<ListProprietes />} /> {/* /admin/proprietes */}
+            <Route path="contrats" element={<FormulaireContrat />} /> {/* /admin/contrats */}
+          </Route>
         </Routes>
       </main>
 

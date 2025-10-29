@@ -41,7 +41,7 @@ const blogPosts = [
       "Toutes les étapes à suivre pour acheter votre bien immobilier en toute sérénité cette année.",
     image:
       "https://images.pexels.com/photos/1370704/pexels-photo-1370704.jpeg?auto=compress&cs=tinysrgb&w=600",
-    date: "12 Mars 2024",
+    date: "12 Novembre 2025",
     readTime: 8,
     category: "Achat",
   },
@@ -52,7 +52,7 @@ const blogPosts = [
       "Identifiez les zones à fort potentiel pour votre prochain achat ou investissement immobilier.",
     image:
       "https://images.pexels.com/photos/2119714/pexels-photo-2119714.jpeg?auto=compress&cs=tinysrgb&w=600",
-    date: "8 Mars 2024",
+    date: "8 Decembre 2025",
     readTime: 6,
     category: "Marché",
   },

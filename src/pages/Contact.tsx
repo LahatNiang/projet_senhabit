@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Clock, Send, MessageCircle } from "lucide-react";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
 import Logo from "../components/ui/Logo";
+import Swal from "sweetalert2";
 
 // ✅ Animation d’apparition au scroll
 function useScrollAnimation() {
@@ -12,8 +13,7 @@ function useScrollAnimation() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting)
-            entry.target.classList.add("animate-fadeUp");
+          if (entry.isIntersecting) entry.target.classList.add("animate-fadeUp");
         });
       },
       { threshold: 0.2 }
@@ -43,12 +43,30 @@ export default function Contact() {
     message: "",
   });
 
+  // ✅ Gère la soumission du formulaire
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // TODO: appeler ton API ou afficher une confirmation
+    console.log("Formulaire envoyé:", formData);
+
+    Swal.fire({
+      title: "Merci ! 🎉",
+      text: "Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.",
+      icon: "success",
+      confirmButtonColor: "#f7b79c",
+      confirmButtonText: "Fermer",
+    });
+
+    // ✅ Réinitialise le formulaire APRÈS l’envoi
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      subject: "information",
+      message: "",
+    });
   };
 
+  // ✅ Gère les changements des champs
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -60,7 +78,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#fffdf8] via-[#fefaf3] to-[#fff9f6] overflow-hidden">
+    <div className="relative min-h-screen bg-gray-300 overflow-hidden">
       {/* ORNEMENT DÉGRADÉ */}
       <div className="absolute inset-0 opacity-40 pointer-events-none">
         <div className="absolute top-[-80px] left-[-100px] w-[400px] h-[400px] rounded-full blur-3xl bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] animate-pulse-slow"></div>
@@ -120,7 +138,7 @@ export default function Contact() {
 
       {/* FORMULAIRE + INFOS COMPLÉMENTAIRES */}
       <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl mx-auto px-6 fade-up opacity-0 z-10">
-        {/* FORM */}
+        {/* FORMULAIRE DE CONTACT */}
         <Card className="p-10 rounded-3xl border border-[#FED9B7]/30 shadow-lg backdrop-blur-lg bg-white/80">
           <h2 className="text-3xl font-serif font-bold text-[#14204d] mb-8">
             Envoyez-nous un message
@@ -214,14 +232,12 @@ export default function Contact() {
               size="lg"
               className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] hover:scale-[1.03] transition-transform shadow-xl"
             >
-              <span className="flex items-center gap-2">
-                <Send className="w-5 h-5 text-[#14204d]" />
-                <span className="text-base font-semibold">Envoyer le message</span>
-              </span>
+              <Send className="w-5 h-5 text-[#14204d]" />
+              <p className="text-base font-semibold">Envoyer le message</p>
             </Button>
           </form>
         </Card>
- 
+
         {/* INFOS SUPPLÉMENTAIRES */}
         <div className="space-y-8">
           <Card className="p-8 bg-gradient-to-br from-[#14204d] to-[#1b285a] text-white rounded-3xl shadow-lg backdrop-blur-md bg-opacity-90">
@@ -263,8 +279,7 @@ export default function Contact() {
 
       {/* FOOTER */}
       <footer className="text-center text-gray-500 mt-16 py-6 fade-up opacity-0">
-        © 2025 <span className="font-semibold text-[#14204d]">SEN HABITA</span>{" "}
-        — Tous droits réservés
+        © 2025 <span className="font-semibold text-[#14204d]">SEN HABITA</span> — Tous droits réservés
       </footer>
 
       {/* Animations */}

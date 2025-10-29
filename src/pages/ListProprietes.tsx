@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { Home, ArrowLeft, Plus ,Search} from "lucide-react";
+import {  ArrowLeft, Plus ,Search,Edit,Trash2} from "lucide-react";
 
 interface Propriete {
   id: number;
@@ -169,14 +169,14 @@ const ListProprietes: React.FC = () => {
   );
 
   return (
-    <div className="p-8 bg-gray-100 rounded-2xl shadow-lg max-w-7xl mx-auto mt-10">
+    <div className="p-8 bg-gray-300 rounded-2xl shadow-lg max-w-7xl mx-auto mt-10  border-2 border-[#FED9B7]">
       {/* header */}
       <div className="flex justify-between items-center mb-8">
-        <button onClick={handleBack} className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-gray-400 transition text-sm">
+        <button onClick={handleBack} className="flex items-center gap-2  bg-[#FED9B7] text-[#14204D] px-3 py-2 rounded-lg hover:bg-gray-400 transition text-sm">
           <ArrowLeft className="w-4 h-4" /> Retour
         </button>
 
-        <button onClick={() => setShowAddModal(true)} className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition text-sm">
+        <button onClick={() => setShowAddModal(true)} className="flex items-center gap-2 bg-[#FED9B7] text-[#14204D] px-4 py-2 rounded-lg hover:bg-gray-400 transition text-sm">
           <Plus className="w-4 h-4" /> Ajouter une propriété
         </button>
       </div>
@@ -188,7 +188,7 @@ const ListProprietes: React.FC = () => {
     placeholder="Rechercher un contrat..."
     value={searchTerm}
     onChange={(e) => setSearchTerm(e.target.value)}
-    className="w-full border border-gray-400 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
+    className="w-full border-2 border-[#FED9B7] rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
   />
 </div>
 
@@ -197,7 +197,7 @@ const ListProprietes: React.FC = () => {
       {/* tableau */}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden">
-          <thead className="bg-gray-300 text-gray-800">
+          <thead className="bg-[#14204D] text-[#FED9B7] ">
             <tr>
               <th className="p-3 border">Titre</th>
               <th className="p-3 border">Type</th>
@@ -221,10 +221,10 @@ const ListProprietes: React.FC = () => {
                   <td className="p-3 border text-center">
                     <div className="flex justify-center gap-2">
                       <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm" onClick={() => editPropriete(p)}>
-                        Modifier
+                        <Edit className="w-4 h-4" /> 
                       </button>
                       <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm" onClick={() => deletePropriete(p.id, p.titre)}>
-                        Supprimer
+                       <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </td>
@@ -244,7 +244,7 @@ const ListProprietes: React.FC = () => {
       {/* modal ajouter */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white rounded-2xl shadow-lg p-6 w-[500px]">
+          <div className="bg-gray-200  border-2 border-[#14204D] rounded-2xl shadow-lg p-6 w-[500px]">
             <h2 className="text-xl font-bold mb-4 text-gray-800 text-center">Ajouter une propriété</h2>
             <form onSubmit={handleAdd} className="grid grid-cols-1 gap-3">
               <input type="text" placeholder="Titre" value={titre} onChange={(e) => setTitre(e.target.value)} className="border p-2 rounded" required />

@@ -26,7 +26,9 @@ export default function Logo({
 
         {/* Conteneur icône */}
         <div
-          className={`relative bg-gradient-to-br from-[#14204d]/80 via-[#1f2d64]/60 to-[#f7b79c]/50 ${sizes[size].container} rounded-3xl shadow-2xl group-hover:shadow-[0_0_50px_rgba(254,217,183,0.6)] group-hover:scale-110 transition-all duration-500 flex items-center justify-center animate-logoPulse`}
+          className={`relative bg-gradient-to-br from-[#14204d]/80 via-[#1f2d64]/60 to-[#f7b79c]/50 ${sizes[size].container} 
+          rounded-3xl shadow-2xl group-hover:shadow-[0_0_50px_rgba(254,217,183,0.6)] 
+          group-hover:scale-110 transition-all duration-500 flex items-center justify-center animate-logoPulse`}
         >
           <Building2 className={`${sizes[size].icon} text-[#f7b79c]`} />
           <Sparkles className="w-3 h-3 text-[#f7b79c] absolute -top-1 -right-1 animate-spin-slow" />

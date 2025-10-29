@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { User, Lock, Mail } from "lucide-react";
-import immobilierPh from "../assets/Ph.jpeg";
+import { User, Lock, Mail ,Building2} from "lucide-react";
+import immobilierPh from "../assets/immo.png";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -41,7 +41,14 @@ const Register: React.FC = () => {
 
         {/* Formulaire côté droit */}
         <div className="w-full md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold mb-6 text-center text-orange-900">
+         <Link
+          to="/"
+          aria-label="Accueil"
+          className="flex justify-between items-start pt-14 pl-0 ml-0" // le logo reste à gauche sans marge
+        >
+          <Building2 className="w-10 h-10 text-[#14204D]" /> {/* logo plus grand */}
+        </Link>
+          <h2 className="text-3xl font-bold mb-6 text-center text-[#FED9B7]">
             Créer un compte
           </h2>
 
@@ -85,7 +92,7 @@ const Register: React.FC = () => {
             {/* Bouton inscription */}
             <button
               type="submit"
-              className="w-full bg-green-900 text-white p-4 rounded-lg hover:bg-gray-300 transition font-semibold text-lg"
+              className="w-full bg-[#FED9B7] text-white p-4 rounded-lg hover:bg-[#14204D] transition font-semibold text-lg"
             >
               S'inscrire
             </button>

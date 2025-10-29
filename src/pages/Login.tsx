@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Lock, User, AlertCircle } from "lucide-react";
+import { Lock, User, AlertCircle,Building2 } from "lucide-react";
 import immobilierImg from "../assets/img.png";
 
 const Login: React.FC = () => {
@@ -63,8 +63,18 @@ const Login: React.FC = () => {
         </div>
 
         {/* Formulaire droit */}
-        <div className="w-full md:w-1/2 p-10 md:p-24 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold mb-6 text-center text-orange-900">
+        <div className="w-full md:w-1/2 p-10 md:p-24 flex flex-col justify-center bg-gray-100">
+       <Link
+  to="/"
+  aria-label="Accueil"
+  className="flex justify-between items-start pt-14 pl-0 ml-0" // le logo reste à gauche sans marge
+>
+  <Building2 className="w-10 h-10 text-[#14204D]" /> {/* logo plus grand */}
+</Link>
+
+
+          <h2 className="text-3xl font-bold mb-6  text-center text-[#FED9B7] ">
+            
             Connexion
           </h2>
 
@@ -122,7 +132,7 @@ const Login: React.FC = () => {
             {/* Bouton connexion */}
             <button
               type="submit"
-              className="w-full bg-green-900 text-white p-4 rounded-lg hover:bg-gray-400 transition font-semibold text-lg"
+              className="w-full bg-[#FED9B7] text-white p-4 rounded-lg hover:bg-[#14204D] transition font-semibold text-lg"
             >
               Se connecter
             </button>

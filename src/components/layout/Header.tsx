@@ -8,25 +8,35 @@ import {
   Star,
   Crown,
   Sparkles,
+  Shield,
+  Award,
+  Zap,
+  Clock,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
+interface MenuItem {
+  name: string;
+  href: string;
+  icon?: typeof Home;
+  badge?: string;
+}
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>("Accueil");
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState<boolean>(false);
 
-  // ✅ Suivi automatique de la section active + effet scroll
   useEffect(() => {
     const sections = document.querySelectorAll("section[id]");
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       setScrolled(window.scrollY > 50);
 
       let current = "Accueil";
       sections.forEach((section) => {
         const top = section.getBoundingClientRect().top;
-        if (top <= window.innerHeight / 3)
+        if (top <= window.innerHeight / 3) {
           current = section.id.charAt(0).toUpperCase() + section.id.slice(1);
+        }
       });
       setActiveSection(current);
     };
@@ -35,310 +45,391 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menuItems = [
-    "Accueil",
-    "Nos biens",
-    "Services",
-    "À propos",
-    "Blog",
-    "Contact",
+  const menuItems: MenuItem[] = [
+    { name: "Accueil", href: "#accueil", icon: Home },
+    { name: "Nos biens", href: "#nosbiens", icon: Star, badge: "New" },
+    { name: "Services", href: "#services", icon: Shield },
+    { name: "À propos", href: "#apropos", icon: Award },
+    { name: "Blog", href: "#blog", icon: Zap },
+    { name: "Contact", href: "#contact", icon: Phone },
   ];
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
         scrolled
-          ? "backdrop-blur-2xl bg-white/10 border-b border-white/20 shadow-2xl"
-          : "backdrop-blur-xl bg-white/5 border-b border-white/10"
+          ? "backdrop-blur-2xl bg-gradient-to-r from-[#14204d]/95 via-[#1a2857]/95 to-[#14204d]/95 border-b-2 border-[#FED9B7]/30 shadow-[0_10px_40px_rgba(254,217,183,0.3)]"
+          : "backdrop-blur-xl bg-gradient-to-r from-[#14204d]/85 via-[#1a2857]/85 to-[#14204d]/85 border-b border-[#FED9B7]/10"
       }`}
       role="banner"
     >
-      {/* Effet de lumière dynamique */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+      {/* Effets de lumière */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FED9B7] to-[#f7b79c] rounded-full blur-3xl animate-pulse-slow"></div>
+        <div className="absolute top-0 right-1/4 w-72 h-72 bg-gradient-to-br from-[#f7b79c] to-[#FED9B7] rounded-full blur-3xl animate-pulse-slow-delayed"></div>
+      </div>
+
+      {/* Ligne décorative animée */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#FED9B7] to-transparent animate-shimmer"></div>
 
       <div className="container mx-auto px-6 relative">
         <div className="flex justify-between items-center py-4">
-          {/* ✅ Logo Premium avec effets */}
-          <motion.a
+          {/* Logo Premium */}
+          <a
             href="/"
-            className="flex items-center gap-3 group relative"
+            className="flex items-center gap-4 group relative"
             aria-label="Sen Habita - Accueil"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            {/* Badge Premium */}
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="absolute -top-2 -right-2"
-            >
-              <Crown className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-            </motion.div>
+            {/* Badge Premium flottant */}
+            <div className="absolute -top-3 -right-3 animate-float">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] rounded-full blur-md animate-pulse"></div>
+                <Crown className="relative w-5 h-5 text-[#FED9B7] fill-[#FED9B7] drop-shadow-lg" />
+              </div>
+            </div>
 
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative p-3 rounded-2xl bg-gradient-to-br from-[#FF6B35] to-[#FF8E53] shadow-2xl shadow-orange-500/30 backdrop-blur-md group"
-            >
-              <Home className="w-7 h-7 text-white" />
+            {/* Icône du logo */}
+            <div className="relative group/logo">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#FED9B7] to-[#f7b79c] rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="relative p-4 rounded-2xl bg-gradient-to-br from-[#14204d] to-[#1e2a5a] shadow-2xl border-2 border-[#FED9B7]/30 group-hover:border-[#FED9B7]/60 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                <Home className="w-8 h-8 text-[#FED9B7] group-hover:text-white transition-colors duration-300 drop-shadow-[0_0_10px_rgba(254,217,183,0.5)]" />
+                
+                {/* Particules */}
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#FED9B7] rounded-full animate-ping"></div>
+                <div className="absolute -bottom-1 -left-1 w-1 h-1 bg-[#f7b79c] rounded-full animate-ping animation-delay-1000"></div>
+              </div>
+            </div>
 
-              {/* Effet de scintillement */}
-              <motion.div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-            </motion.div>
-
+            {/* Texte du logo */}
             <div className="relative">
-              <motion.h1
-                className="text-2xl font-bold font-display text-white tracking-tight drop-shadow-lg"
-                whileHover={{ scale: 1.05 }}
-              >
-                SEN{" "}
-                <span className="bg-gradient-to-r from-[#FF8E53] to-[#FF6B35] text-transparent bg-clip-text">
+              <h1 className="text-3xl font-bold font-display tracking-tight">
+                <span className="text-white drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_2px_15px_rgba(255,255,255,0.5)] transition-all duration-300">
+                  SEN
+                </span>{" "}
+                <span className="bg-gradient-to-r from-[#FED9B7] via-[#f7b79c] to-[#FED9B7] text-transparent bg-clip-text animate-gradient bg-[length:200%_auto] group-hover:scale-105 inline-block transition-transform">
                   HABITA
                 </span>
-              </motion.h1>
-              <motion.p
-                className="text-xs text-white/80 font-sans flex items-center gap-1"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Sparkles className="w-3 h-3 text-yellow-400" />
-                Excellence Immobilière
-              </motion.p>
-            </div>
-          </motion.a>
+              </h1>
+              
+              <p className="text-xs text-[#FED9B7]/90 font-sans flex items-center gap-2 mt-1">
+                <Sparkles className="w-3 h-3 text-[#FED9B7] animate-pulse" />
+                <span className="animate-text-shimmer bg-gradient-to-r from-[#FED9B7] via-white to-[#FED9B7] bg-[length:200%_auto] text-transparent bg-clip-text">
+                  Excellence Immobilière Premium
+                </span>
+              </p>
 
-          {/* ✅ Navigation desktop premium avec effets avancés */}
+              <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-[#FED9B7] to-transparent group-hover:w-full transition-all duration-500"></div>
+            </div>
+          </a>
+
+          {/* Navigation Desktop */}
           <nav
-            className="hidden lg:flex items-center gap-1 backdrop-blur-md bg-white/5 rounded-2xl p-2 border border-white/10 shadow-2xl"
+            className="hidden lg:flex items-center gap-2 backdrop-blur-xl bg-gradient-to-r from-[#14204d]/70 via-[#1a2857]/70 to-[#14204d]/70 rounded-2xl p-2 border-2 border-[#FED9B7]/20 shadow-[0_8px_32px_rgba(254,217,183,0.2)] hover:shadow-[0_8px_40px_rgba(254,217,183,0.3)] transition-all duration-500"
             role="navigation"
             aria-label="Navigation principale"
           >
             {menuItems.map((item, i) => {
-              const isActive = activeSection === item;
+              const isActive = activeSection === item.name;
+              const Icon = item.icon;
+              
               return (
-                <motion.a
+                <a
                   key={i}
-                  href={`#${item.toLowerCase().replace(" ", "")}`}
-                  whileHover={{
-                    scale: 1.05,
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`relative px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  href={item.href}
+                  className={`relative px-5 py-3 rounded-xl font-semibold transition-all duration-300 group/item overflow-hidden ${
                     isActive
-                      ? "text-white bg-white/20 shadow-lg"
-                      : "text-white/80 hover:text-white hover:bg-white/5"
+                      ? "text-white bg-gradient-to-r from-[#FED9B7]/30 to-[#f7b79c]/30 shadow-lg border-2 border-[#FED9B7]/50"
+                      : "text-[#FED9B7]/80 hover:text-white hover:bg-[#FED9B7]/10 border-2 border-transparent"
                   }`}
                   style={{
-                    textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                    textShadow: "0 2px 8px rgba(0,0,0,0.4)",
                   }}
                 >
-                  <span className="relative flex flex-col items-center">
-                    {item}
+                  {/* Effet de brillance */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/item:translate-x-full transition-transform duration-1000"></div>
 
-                    {/* ✅ Ligne de soulignement animée */}
-                    <motion.span
-                      className="absolute bottom-2 left-1/2 h-0.5 bg-gradient-to-r from-[#FF8E53] to-[#FF6B35] rounded-full"
-                      initial={{ width: 0, x: "-50%" }}
-                      animate={{
-                        width: isActive ? "80%" : "0%",
-                        x: "-50%",
-                      }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                    />
+                  <span className="relative flex items-center gap-2">
+                    {Icon && (
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#FED9B7]' : 'text-[#FED9B7]/70 group-hover/item:text-[#FED9B7]'} transition-colors duration-300`} />
+                    )}
+                    {item.name}
 
-                    {/* ✅ Effet Ping premium */}
-                    {isActive && (
-                      <motion.span
-                        className="absolute -top-1 -right-1"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 500,
-                          damping: 15,
-                        }}
-                      >
-                        <span className="relative flex h-3 w-3">
-                          <span className="absolute inline-flex h-full w-full rounded-full bg-[#FF6B35] opacity-80 animate-ping"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-[#FF8E53] to-[#FF6B35] shadow-lg"></span>
-                        </span>
-                      </motion.span>
+                    {item.badge && (
+                      <span className="absolute -top-2 -right-2 px-2 py-0.5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-[10px] font-bold rounded-full animate-bounce shadow-lg">
+                        {item.badge}
+                      </span>
                     )}
 
-                    {/* ✅ Effet de particules sur hover */}
-                    <motion.div
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF8E53]/20 to-[#FF6B35]/20"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
+                    <span className={`absolute bottom-1 left-1/2 h-1 bg-gradient-to-r from-[#FED9B7] via-[#f7b79c] to-[#FED9B7] rounded-full transition-all duration-400 ${
+                      isActive ? 'w-3/4 -translate-x-1/2' : 'w-0 -translate-x-1/2 group-hover/item:w-3/4'
+                    }`} />
+
+                    {isActive && (
+                      <span className="absolute -top-1 -right-1">
+                        <span className="relative flex h-3 w-3">
+                          <span className="absolute inline-flex h-full w-full rounded-full bg-[#FED9B7] opacity-75 animate-ping"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] shadow-[0_0_10px_rgba(254,217,183,0.8)]"></span>
+                        </span>
+                      </span>
+                    )}
                   </span>
-                </motion.a>
+                </a>
               );
             })}
           </nav>
 
-          {/* ✅ Contact & Admin - Style Premium */}
+          {/* Actions Premium */}
           <div className="hidden lg:flex items-center gap-4">
-            <motion.a
+            {/* Bouton téléphone */}
+            <a
               href="tel:+221772345678"
-              className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 text-white hover:bg-white/20 transition-all group"
+              className="relative flex items-center gap-3 bg-gradient-to-r from-[#14204d]/80 to-[#1a2857]/80 backdrop-blur-md px-5 py-3 rounded-xl border-2 border-[#FED9B7]/30 text-[#FED9B7] hover:border-[#FED9B7]/60 transition-all duration-300 group/phone overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(254,217,183,0.4)]"
               aria-label="Appeler Sen Habita"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 30px rgba(255, 107, 53, 0.4)",
-              }}
-              whileTap={{ scale: 0.95 }}
             >
-              <motion.div
-                animate={{ rotate: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <Phone className="w-4 h-4 text-[#FF8E53]" />
-              </motion.div>
-              <span className="text-sm font-semibold text-white">
-                +221 77 234 56 78
-              </span>
-            </motion.a>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FED9B7]/10 to-[#f7b79c]/10 scale-x-0 group-hover/phone:scale-x-100 transition-transform duration-500 origin-left"></div>
 
-            <motion.a
+              <div className="relative">
+                <Phone className="w-5 h-5 text-[#FED9B7] group-hover/phone:animate-ring" />
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              </div>
+              
+              <div className="relative flex flex-col">
+                <span className="text-[10px] text-[#FED9B7]/70 leading-none">Appelez-nous</span>
+                <span className="text-sm font-bold text-[#FED9B7] group-hover/phone:text-white transition-colors">
+                  +221 77 234 56 78
+                </span>
+              </div>
+
+              <Clock className="w-4 h-4 text-[#FED9B7]/50 absolute -top-2 -right-2 animate-spin-slow" />
+            </a>
+
+            {/* Bouton Espace Premium */}
+            <a
               href="/login"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 40px rgba(255, 107, 53, 0.6)",
-                y: -2,
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-3 bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] text-white px-6 py-3 rounded-xl shadow-2xl shadow-orange-500/40 font-semibold transition-all duration-300 relative overflow-hidden group"
+              className="relative flex items-center gap-3 bg-gradient-to-r from-[#FED9B7] via-[#f7b79c] to-[#FED9B7] bg-[length:200%_auto] hover:bg-[position:right_center] text-[#14204d] px-7 py-3 rounded-xl shadow-[0_10px_30px_rgba(254,217,183,0.5)] hover:shadow-[0_15px_40px_rgba(254,217,183,0.7)] font-bold transition-all duration-500 group/premium overflow-hidden border-2 border-white/20 hover:scale-105 hover:-translate-y-1"
             >
-              {/* Effet de brillance */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.8 }}
-              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover/premium:translate-x-full transition-transform duration-1000"></div>
 
-              <Mail className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">Espace Premium</span>
+              <div className="absolute top-0 left-0 w-full h-full">
+                <span className="absolute top-2 left-4 w-1 h-1 bg-white/60 rounded-full animate-float"></span>
+                <span className="absolute top-4 right-6 w-1 h-1 bg-white/60 rounded-full animate-float animation-delay-500"></span>
+                <span className="absolute bottom-3 left-8 w-1 h-1 bg-white/60 rounded-full animate-float animation-delay-1000"></span>
+              </div>
 
-              <motion.div
-                className="absolute -right-2 -top-2"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              >
-                <Star className="w-3 h-3 text-yellow-300 fill-yellow-300" />
-              </motion.div>
-            </motion.a>
+              <Mail className="w-5 h-5 relative z-10 group-hover/premium:scale-110 transition-transform" />
+              <span className="relative z-10 flex items-center gap-2">
+                Espace Premium
+                <Shield className="w-4 h-4 animate-pulse" />
+              </span>
+
+              <div className="absolute -right-2 -top-2 animate-spin-slow">
+                <Star className="w-5 h-5 text-[#14204d]/40 fill-[#14204d]/40" />
+              </div>
+            </a>
           </div>
 
-          {/* ✅ Bouton menu mobile premium */}
-          <motion.button
+          {/* Bouton menu mobile */}
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-3 text-white hover:bg-white/20 rounded-xl transition-all backdrop-blur-md border border-white/10 shadow-lg relative"
+            className="lg:hidden relative p-4 text-[#FED9B7] rounded-xl transition-all backdrop-blur-xl border-2 border-[#FED9B7]/30 shadow-lg hover:shadow-[0_0_30px_rgba(254,217,183,0.4)] group/mobile overflow-hidden"
             aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={mobileMenuOpen}
-            whileHover={{
-              scale: 1.05,
-              backgroundColor: "rgba(255, 255, 255, 0.15)",
-            }}
-            whileTap={{ scale: 0.95 }}
           >
-            <AnimatePresence mode="wait">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#FED9B7]/10 to-[#f7b79c]/10 scale-0 group-hover/mobile:scale-100 transition-transform duration-300"></div>
+
+            <div className="relative">
               {mobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                >
-                  <X className="w-6 h-6" />
-                </motion.div>
+                <X className="w-7 h-7 animate-spin-in" />
               ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                >
-                  <Menu className="w-6 h-6" />
-                </motion.div>
+                <Menu className="w-7 h-7 animate-fade-in" />
               )}
-            </AnimatePresence>
-          </motion.button>
+            </div>
+
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-red-500 to-pink-500 rounded-full animate-pulse"></span>
+          </button>
         </div>
 
-        {/* ✅ Menu mobile premium */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.nav
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="lg:hidden py-6 mt-2 backdrop-blur-2xl bg-white/10 border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden"
-              role="navigation"
-              aria-label="Navigation mobile"
-            >
-              {/* Effet de fond animé */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B35]/10 to-[#FF8E53]/5" />
+        {/* Menu mobile */}
+        {mobileMenuOpen && (
+          <nav
+            className="lg:hidden py-6 mt-4 mb-4 backdrop-blur-2xl bg-gradient-to-br from-[#14204d]/95 to-[#1a2857]/95 border-2 border-[#FED9B7]/30 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] relative overflow-hidden animate-slide-down"
+            role="navigation"
+            aria-label="Navigation mobile"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[#FED9B7]/5 to-[#f7b79c]/5 animate-pulse-slow"></div>
 
-              <div className="relative z-10 flex flex-col gap-2 px-4">
-                {menuItems.map((item, i) => {
-                  const isActive = activeSection === item;
-                  return (
-                    <motion.a
-                      key={i}
-                      href={`#${item.toLowerCase().replace(" ", "")}`}
-                      className={`relative px-4 py-3 rounded-xl font-semibold transition-all ${
-                        isActive
-                          ? "text-white bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] shadow-lg"
-                          : "text-white/90 hover:text-white hover:bg-white/10"
-                      }`}
-                      whileHover={{ x: 10 }}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <span className="flex items-center gap-3">
-                        {isActive && (
-                          <motion.span
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="w-2 h-2 bg-white rounded-full"
-                          />
-                        )}
-                        {item}
-                      </span>
-                    </motion.a>
-                  );
-                })}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#FED9B7]/20 to-transparent rounded-full blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#f7b79c]/20 to-transparent rounded-full blur-2xl"></div>
 
-                <div className="pt-4 mt-4 border-t border-white/20">
-                  <motion.a
-                    href="/admin/login"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-[#FF6B35] to-[#FF8E53] text-white px-5 py-3 rounded-xl shadow-lg font-semibold"
+            <div className="relative z-10 flex flex-col gap-3 px-4">
+              {menuItems.map((item, i) => {
+                const isActive = activeSection === item.name;
+                const Icon = item.icon;
+                
+                return (
+                  <a
+                    key={i}
+                    href={item.href}
+                    className={`relative px-5 py-4 rounded-xl font-semibold transition-all duration-300 overflow-hidden group/mobile-item ${
+                      isActive
+                        ? "text-[#14204d] bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] shadow-lg scale-105"
+                        : "text-[#FED9B7]/90 hover:text-white hover:bg-[#FED9B7]/10 border border-[#FED9B7]/20"
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
                   >
-                    <Crown className="w-4 h-4" />
-                    Espace Premium
-                  </motion.a>
-                </div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#FED9B7]/20 to-transparent -translate-x-full group-hover/mobile-item:translate-x-0 transition-transform duration-500"></div>
+
+                    <span className="relative flex items-center gap-3">
+                      {Icon && <Icon className="w-5 h-5" />}
+                      {item.name}
+                      
+                      {isActive && (
+                        <span className="ml-auto flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full rounded-full bg-[#14204d] opacity-75 animate-ping"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#14204d]"></span>
+                        </span>
+                      )}
+
+                      {item.badge && (
+                        <span className="ml-auto px-2 py-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
+                    </span>
+                  </a>
+                );
+              })}
+
+              <div className="flex items-center gap-3 my-2">
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#FED9B7]/30 to-transparent"></div>
+                <Sparkles className="w-4 h-4 text-[#FED9B7] animate-pulse" />
+                <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#FED9B7]/30 to-transparent"></div>
               </div>
-            </motion.nav>
-          )}
-        </AnimatePresence>
+
+              <div className="space-y-3 mt-2">
+                <a
+                  href="tel:+221772345678"
+                  className="flex items-center justify-center gap-3 w-full bg-[#14204d]/60 backdrop-blur-md text-[#FED9B7] px-5 py-3 rounded-xl font-semibold border-2 border-[#FED9B7]/30 hover:border-[#FED9B7]/60 transition-all"
+                >
+                  <Phone className="w-5 h-5" />
+                  +221 77 234 56 78
+                </a>
+
+                <a
+                  href="/login"
+                  className="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] px-5 py-4 rounded-xl shadow-xl font-bold hover:scale-105 transition-transform"
+                >
+                  <Crown className="w-5 h-5" />
+                  Espace Premium
+                  <Shield className="w-4 h-4 animate-pulse" />
+                </a>
+              </div>
+            </div>
+          </nav>
+        )}
       </div>
-    </motion.header>
+
+      <style>{`
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient {
+          animation: gradient 3s ease infinite;
+        }
+
+        @keyframes text-shimmer {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-text-shimmer {
+          animation: text-shimmer 2s ease infinite;
+        }
+
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .animate-shimmer {
+          animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.6; }
+          50% { opacity: 1; }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 4s ease-in-out infinite;
+        }
+        .animate-pulse-slow-delayed {
+          animation: pulse-slow 4s ease-in-out infinite 2s;
+        }
+
+        @keyframes ring {
+          0%, 100% { transform: rotate(0deg); }
+          10% { transform: rotate(15deg); }
+          20% { transform: rotate(-15deg); }
+          30% { transform: rotate(10deg); }
+          40% { transform: rotate(-10deg); }
+          50% { transform: rotate(0deg); }
+        }
+        .group-hover\/phone:hover .animate-ring {
+          animation: ring 0.5s ease-in-out;
+        }
+
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+
+        @keyframes spin-in {
+          from { transform: rotate(-90deg); opacity: 0; }
+          to { transform: rotate(0deg); opacity: 1; }
+        }
+        .animate-spin-in {
+          animation: spin-in 0.3s ease-out;
+        }
+
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+
+        @keyframes slide-down {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-slide-down {
+          animation: slide-down 0.4s ease-out;
+        }
+
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+        .animation-delay-1000 {
+          animation-delay: 1s;
+        }
+      `}</style>
+    </header>
   );
 }

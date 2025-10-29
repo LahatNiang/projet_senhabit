@@ -2,7 +2,7 @@ import { Award, Users, TrendingUp, Heart, Target, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 // import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-
+import { Link } from "react-router-dom";
 const team = [
   {
     name: "Maty Mbaye",
@@ -267,13 +267,15 @@ export default function About() {
             Contactez-nous dès aujourd’hui pour une consultation gratuite avec
             nos experts.
           </p>
-          <Button
-            variant="primary"
-            size="lg"
-            className="px-8 py-4 text-lg font-semibold rounded-2xl shadow-xl bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d] hover:scale-105 transition-transform duration-300"
-          >
-            Prendre rendez-vous
-          </Button>
+          <Link
+  to="/contact"
+  className="inline-block px-8 py-4 text-lg font-semibold rounded-2xl shadow-xl 
+             bg-gradient-to-r from-[#FED9B7] to-[#f7b79c] text-[#14204d]
+             hover:scale-105 transition-transform duration-300"
+>
+  Prendre rendez-vous
+</Link>
+
         </div>
 
         <motion.div

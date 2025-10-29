@@ -192,12 +192,13 @@ const Contrats: React.FC = () => {
   });
 
   return (
-    <div className="p-8 bg-white rounded-2xl shadow-lg max-w-7xl mx-auto mt-10">
+    
+    <div className="p-8 border-2 border-[#FED9B7] bg-gray-200 rounded-2xl shadow-lg max-w-7xl mx-auto mt-10">
       {/* ====== HEADER ====== */}
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition text-sm"
+          className="flex items-center gap-2  bg-[#14204D] text-[#FED9B7] px-3 py-2 rounded-lg hover:bg-gray-700 transition text-sm"
         >
           <ArrowLeft className="w-4 h-4" /> Retour
         </button>
@@ -207,28 +208,28 @@ const Contrats: React.FC = () => {
             resetForm();
             setShowModal(true);
           }}
-          className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm"
+          className="flex items-center gap-2 bg-[#14204D] text-[#FED9B7] px-4 py-2 rounded-lg hover:bg-gray-700 transition text-sm"
         >
            <FileText className="w-4 h-4" />  Nouveau Contrat
         </button>
       </div>
 
       {/* ====== BARRE DE RECHERCHE ====== */}
-      <div className="flex   items-center mb-6 border border-gray-300 rounded-full overflow-hidden max-w-md ">
+      <div className="flex  border-2 border-[#FED9B7] items-center mb-6  rounded-full overflow-hidden max-w-md ">
         <Search className="w-5 h-5 text-gray-500 ml-2" />
         <input
           type="text"
           placeholder="Rechercher un contrat..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 w-full outline-none"
+          className="p-2 w-full outline-none  "
         />
       </div>
 
       {/* ====== TABLEAU ====== */}
       <div className="overflow-x-auto">
         <table className="min-w-full border  border-gray-200 rounded-lg overflow-hidden">
-          <thead className="bg-gray-600  text-gray-200">
+          <thead className=" bg-[#FED9B7] text-[#14204D]">
             <tr>
               <th className="border p-3">ID</th>
               <th className="border p-3">Client</th>
@@ -314,8 +315,8 @@ const Contrats: React.FC = () => {
       {/* ====== MODAL AJOUT / MODIF ====== */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-2xl shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-[#FFD700] flex items-center gap-2">
+          <div className="bg-gray-200 rounded-xl p-6 w-full max-w-2xl shadow-lg border-2 border-[#FED9B7]">
+            <h2 className="text-xl font-bold mb-4 text-[#14204D] flex items-center gap-2">
               <FileText className="w-5 h-5" />
               {editingId ? "Modifier le contrat" : "Ajouter un contrat"}
             </h2>
@@ -402,7 +403,7 @@ const Contrats: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                  className="bg-[#FED9B7] text-[#14204D] px-4 py-2 rounded-lg hover:bg-green-700"
                 >
                   {editingId ? "Modifier" : "Ajouter"}
                 </button>
@@ -412,6 +413,7 @@ const Contrats: React.FC = () => {
         </div>
       )}
     </div>
+   
   );
 };
 
